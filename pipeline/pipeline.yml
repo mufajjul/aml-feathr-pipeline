@@ -4,24 +4,20 @@ trigger:
 variables:
   # Azure Resource Manager connection created during pipeline creation
   azureServiceConnectionId: '{{ azureServiceConnection.Id }}'
-
   # Web app name
   webAppName: 'aml-feathr'
-
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
-
   # Environment name
   environmentName: 'feathr-env'
-
   # Environment file path (.yml)
   environmentPath: 'conda.yml'
-
   # Project root folder. Point to the folder containing manage.py file.
   projectRoot: $(System.DefaultWorkingDirectory)
-
   # Python version: 3.9.12
   pythonVersion: '3.9.12'
+  resourceGroup: 'rizofeathr11'
+  workspaceName: 'mlw-basicex-prod-202212150056'
 
 stages:
 - stage: Feathr
@@ -38,11 +34,24 @@ stages:
       displayName: 'Use Python $(pythonVersion)'
 
     - script: |
-        conda create env -n $(environmentName) --file $(environmentPath)
-        conda activate $(environmentName)
+        python create_environment.py
+    # - script: |
+    #     conda create env -n $(environmentName) --file $(environmentPath)
+    #     conda activate $(environmentName)
       workingDirectory: $(projectRoot)
   
   - job: RunFeathr
+    pool:
+      vmImage: $(vmImageName)
+    steps:
+    - task: UsePythonVersion@0
+      inputs:
+        versionSpec: '$(pythonVersion)'
+      displayName: 'Use Python $(pythonVersion)'
+
+    - script: |
+        python feathr.py
+      workingDirectory: $(projectRoot)
 
 
 - stage: AML
@@ -59,7 +68,41 @@ stages:
         versionSpec: '$(pythonVersion)'
       displayName: 'Use Python $(pythonVersion)'
 
-    - script: |
-        conda activate $(environmentName)
-        python
-      workingDirectory: $(projectRoot)
+    steps:
+  - task: AzureCLI@2
+    displayName: 'Azure CLI '
+    inputs:
+      azureSubscription: 'azure Resource Manager service connection'
+      scriptType: ps
+      scriptLocation: inlineScript
+      inlineScript: |
+      #To install the Machine Learning CLI extension
+      az extension add -n azure-cli-ml
+
+      az ml job create --file aml_job.yml --resource-group $(resourceGroup) --workspace-name $(workspaceName)
+      
+# - stage: Deploy
+#   displayName: 'Deploy Web App'
+#   dependsOn: Build
+#   condition: succeeded()
+#   jobs:
+#   - deployment: DeploymentJob
+#     pool:
+#       vmImage: $(vmImageName)
+#     environment: $(environmentName)
+#     strategy:
+#       runOnce:
+#         deploy:
+#           steps:
+
+#           - task: UsePythonVersion@0
+#             inputs:
+#               versionSpec: '$(pythonVersion)'
+#             displayName: 'Use Python version'
+
+#           - task: AzureWebApp@1
+#             displayName: 'Deploy Azure Web App : {{ webAppName }}'
+#             inputs:
+#               azureSubscription: $(azureServiceConnectionId)
+#               appName: $(webAppName)
+#               package: $(Pipeline.Workspace)/drop/$(Build.BuildId).zip
