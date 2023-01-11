@@ -1,0 +1,65 @@
+trigger:
+- main
+
+variables:
+  # Azure Resource Manager connection created during pipeline creation
+  azureServiceConnectionId: '{{ azureServiceConnection.Id }}'
+
+  # Web app name
+  webAppName: 'aml-feathr'
+
+  # Agent VM image name
+  vmImageName: 'ubuntu-latest'
+
+  # Environment name
+  environmentName: 'feathr-env'
+
+  # Environment file path (.yml)
+  environmentPath: 'conda.yml'
+
+  # Project root folder. Point to the folder containing manage.py file.
+  projectRoot: $(System.DefaultWorkingDirectory)
+
+  # Python version: 3.9.12
+  pythonVersion: '3.9.12'
+
+stages:
+- stage: Feathr
+  displayName: Feathr stage
+  jobs:
+
+  - job: CreateEnvironment
+    pool:
+      vmImage: $(vmImageName)
+    steps:
+    - task: UsePythonVersion@0
+      inputs:
+        versionSpec: '$(pythonVersion)'
+      displayName: 'Use Python $(pythonVersion)'
+
+    - script: |
+        conda create env -n $(environmentName) --file $(environmentPath)
+        conda activate $(environmentName)
+      workingDirectory: $(projectRoot)
+  
+  - job: RunFeathr
+
+
+- stage: AML
+  displayName: 'AML'
+  dependsOn: Feathr
+  condition: succeeded()
+  jobs:
+  - job: AMLJob
+    pool:
+      vmImage: $(vmImageName)
+    steps:
+    - task: UsePythonVersion@0
+      inputs:
+        versionSpec: '$(pythonVersion)'
+      displayName: 'Use Python $(pythonVersion)'
+
+    - script: |
+        conda activate $(environmentName)
+        python
+      workingDirectory: $(projectRoot)
