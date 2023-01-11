@@ -1,0 +1,33 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
+code: src
+command: >-
+  python train.py 
+  --data_path ${{inputs.data_path}}
+  --registered_model_name ${{inputs.registered_model_name}}
+inputs:
+  data_path: 
+    type: string
+  registered_model_name: 
+    type: string
+# environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
+environment: 'feathr-env'
+compute: azureml:cpu-cluster
+display_name: aml-demo-example
+experiment_name: aml-demo-example
+description: Train demo dataset.
+
+
+# jobs:
+# - job: A
+#   steps:
+#   # assume that MyTask generates an output variable called "MyVar"
+#   # (you would learn that from the task's documentation)
+#   - task: MyTask@1
+#     name: ProduceVar  # because we're going to depend on it, we need to name the step
+# - job: B
+#   dependsOn: A
+#   variables:
+#     # map the output variable from A into this job
+#     varFromA: $[ dependencies.A.outputs['ProduceVar.MyVar'] ]
+#   steps:
+#   - script: echo $(varFromA) # this step uses the mapped-in variable
