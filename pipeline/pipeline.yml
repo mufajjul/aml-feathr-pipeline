@@ -68,41 +68,15 @@ stages:
         versionSpec: '$(pythonVersion)'
       displayName: 'Use Python $(pythonVersion)'
 
-    steps:
-  - task: AzureCLI@2
-    displayName: 'Azure CLI '
-    inputs:
-      azureSubscription: 'azure Resource Manager service connection'
-      scriptType: ps
-      scriptLocation: inlineScript
-      inlineScript: |
-      #To install the Machine Learning CLI extension
-      az extension add -n azure-cli-ml
+    - task: AzureCLI@2
+      displayName: 'Azure CLI'
+      inputs:
+        azureSubscription: 'azure Resource Manager service connection'
+        scriptType: ps
+        scriptLocation: inlineScript
+        inlineScript: |
+        #To install the Machine Learning CLI extension
+        az extension add -n azure-cli-ml
 
-      az ml job create --file aml_job.yml --resource-group $(resourceGroup) --workspace-name $(workspaceName)
+        az ml job create --file aml_job.yml --resource-group $(resourceGroup) --workspace-name $(workspaceName)
       
-# - stage: Deploy
-#   displayName: 'Deploy Web App'
-#   dependsOn: Build
-#   condition: succeeded()
-#   jobs:
-#   - deployment: DeploymentJob
-#     pool:
-#       vmImage: $(vmImageName)
-#     environment: $(environmentName)
-#     strategy:
-#       runOnce:
-#         deploy:
-#           steps:
-
-#           - task: UsePythonVersion@0
-#             inputs:
-#               versionSpec: '$(pythonVersion)'
-#             displayName: 'Use Python version'
-
-#           - task: AzureWebApp@1
-#             displayName: 'Deploy Azure Web App : {{ webAppName }}'
-#             inputs:
-#               azureSubscription: $(azureServiceConnectionId)
-#               appName: $(webAppName)
-#               package: $(Pipeline.Workspace)/drop/$(Build.BuildId).zip
