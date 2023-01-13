@@ -1,53 +1,79 @@
-name: create-job-workflow
-on: 
-#  push:
-  workflow_dispatch:
-    inputs:
-      GROUP:
-        default: "rg-contoso-819prod"
-      LOCATION:
-        default: "eastus"
-      WORKSPACE:
-        default: "mlw-contoso-819prod"
-  workflow_call:
-    inputs:
-      GROUP:
-        default: "rg-contoso-819prod"
-        type: string
-      LOCATION:
-        default: "eastus"
-        type: string
-      WORKSPACE:
-        default: "mlw-contoso-819prod"
-        type: string
-    secrets:
-      AZ_CREDS:
-        required: true
+trigger:
+- main
 
-env:
-  GROUP: ${{ github.event.inputs.name.GROUP }}
-  LOCATION: ${{ github.event.inputs.name.LOCATION }}
-  WORKSPACE: ${{ github.event.inputs.name.WORKSPACE }}  
+variables:
+  # Azure Resource Manager connection created during pipeline creation
+  azureServiceConnectionId: '{{ azureServiceConnection.Id }}'
+  # Web app name
+  webAppName: 'aml-feathr'
+  # Agent VM image name
+  vmImageName: 'ubuntu-latest'
+  # Environment name
+  environmentName: 'feathr-env'
+  # Environment file path (.yml)
+  environmentPath: 'conda.yml'
+  # Project root folder. Point to the folder containing manage.py file.
+  projectRoot: $(System.DefaultWorkingDirectory)
+  # Python version: 3.9.12
+  pythonVersion: '3.9.12'
+  resourceGroup: 'rizofeathr11'
+  workspaceName: 'mlw-basicex-prod-202212150056'
 
-jobs:
-  create-mljob-job:
-    environment: 
-      name: dev
-      url: ${{ steps.create-job-step.outputs.RUNURI }}
-    runs-on: ubuntu-latest
+stages:
+- stage: Feathr
+  displayName: Feathr stage
+  jobs:
+
+  - job: CreateEnvironment
+    pool:
+      vmImage: $(vmImageName)
     steps:
-    - name: check out repo
-      uses: actions/checkout@v2
-    - name: azure login
-      uses: azure/login@v1
-      with:
-        creds: ${{secrets.AZ_CREDS}}
-    - name: setup
-      run: bash setup.sh 
-      working-directory: cli
-    - name: create-job-step
-      id: create-job-step 
-      run: bash -x cli/create-job.sh src/pipeline/pipeline.yml
-    outputs:
-      MLJOB_RUNID: ${{ steps.create-job-step.outputs.RUNID }}
-      MLJOB_RUNURI: ${{ steps.create-job-step.outputs.RUNURI }}
+    - task: UsePythonVersion@0
+      inputs:
+        versionSpec: '$(pythonVersion)'
+      displayName: 'Use Python $(pythonVersion)'
+
+    - script: |
+        python create_environment.py
+    # - script: |
+    #     conda create env -n $(environmentName) --file $(environmentPath)
+    #     conda activate $(environmentName)
+      workingDirectory: $(projectRoot)
+  
+  - job: RunFeathr
+    pool:
+      vmImage: $(vmImageName)
+    steps:
+    - task: UsePythonVersion@0
+      inputs:
+        versionSpec: '$(pythonVersion)'
+      displayName: 'Use Python $(pythonVersion)'
+
+    - script: |
+        python feathr.py
+      workingDirectory: $(projectRoot)
+
+
+- stage: AML
+  displayName: 'AML'
+  dependsOn: Feathr
+  condition: succeeded()
+  jobs:
+  - job: AMLJob
+    pool:
+      vmImage: $(vmImageName)
+    steps:
+    - task: UsePythonVersion@0
+      inputs:
+        versionSpec: '$(pythonVersion)'
+      displayName: 'Use Python $(pythonVersion)'
+
+    - task: AzureCLI@2
+      displayName: 'Azure CLI'
+      inputs:
+        azureSubscription: 'azure Resource Manager service connection'
+        scriptType: ps
+        scriptLocation: inlineScript
+        inlineScript: 
+          az extension add -n azure-cli-ml
+          az ml job create --file aml_job.yml --resource-group $(resourceGroup) --workspace-name $(workspaceName)
