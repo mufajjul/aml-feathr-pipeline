@@ -3,7 +3,7 @@ trigger:
 
 variables:
   # Azure Resource Manager connection created during pipeline creation
-  azureServiceConnectionId: '{{ azureServiceConnection.Id }}'
+  # azureServiceConnectionId: '{{ azureServiceConnection.Id }}'
   # Web app name
   webAppName: 'aml-feathr'
   # Agent VM image name
@@ -74,6 +74,8 @@ stages:
         azureSubscription: 'azure Resource Manager service connection'
         scriptType: ps
         scriptLocation: inlineScript
-        inlineScript: 
+        inlineScript: |
+          #To install the Machine Learning CLI extension
           az extension add -n azure-cli-ml
           az ml job create --file aml_job.yml --resource-group $(resourceGroup) --workspace-name $(workspaceName)
+        
