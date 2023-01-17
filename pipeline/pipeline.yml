@@ -37,6 +37,7 @@ stages:
     # - script: |
     #     python create_environment.py
     - script: |
+        ls -al
         conda init bash
         conda create env -n $(environmentName) --file $(environmentPath)
         conda activate $(environmentName)
