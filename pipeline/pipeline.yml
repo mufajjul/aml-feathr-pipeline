@@ -18,7 +18,7 @@ variables:
   pythonVersion: '3.9.12'
   resourceGroup: 'rizofeathr11'
   workspaceName: 'mlw-basicex-prod-202212150056'
-  subscriptionId: 'a6c2a7cc-d67e-4a1a-b765-983f08c0423a'
+  AzDoServiceConnectionName: 'Rizo-R'
 
 stages:
 - stage: Feathr
@@ -71,7 +71,7 @@ stages:
     - task: AzureCLI@2
       displayName: 'Azure CLI'
       inputs:
-        azureSubscription: '$(subscriptionId)'
+        azureSubscription: '$(AzDoServiceConnectionName)'
         scriptType: ps
         scriptLocation: inlineScript
         inlineScript: |
