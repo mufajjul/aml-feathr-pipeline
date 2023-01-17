@@ -18,6 +18,7 @@ variables:
   pythonVersion: '3.9.12'
   resourceGroup: 'rizofeathr11'
   workspaceName: 'mlw-basicex-prod-202212150056'
+  subscriptionId: 'a6c2a7cc-d67e-4a1a-b765-983f08c0423a'
 
 stages:
 - stage: Feathr
@@ -33,11 +34,11 @@ stages:
         versionSpec: '$(pythonVersion)'
       displayName: 'Use Python $(pythonVersion)'
 
-    # - script: |
-    #     python create_environment.py
     - script: |
-        conda create env -n $(environmentName) --file $(environmentPath)
-        conda activate $(environmentName)
+        python create_environment.py
+    # - script: |
+    #     conda create env -n $(environmentName) --file $(environmentPath)
+    #     conda activate $(environmentName)
       workingDirectory: $(projectRoot)
   
   - job: RunFeathr
@@ -52,7 +53,6 @@ stages:
     - script: |
         python feathr.py
       workingDirectory: $(projectRoot)
-
 
 - stage: AML
   displayName: 'AML'
@@ -71,7 +71,7 @@ stages:
     - task: AzureCLI@2
       displayName: 'Azure CLI'
       inputs:
-        azureSubscription: 'azure Resource Manager service connection'
+        azureSubscription: '$(subscriptionId)'
         scriptType: ps
         scriptLocation: inlineScript
         inlineScript: |
