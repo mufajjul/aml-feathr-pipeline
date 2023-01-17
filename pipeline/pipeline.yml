@@ -11,7 +11,7 @@ variables:
   # Environment name
   environmentName: 'feathr-env'
   # Environment file path (.yml)
-  environmentPath: 'conda.yml'
+  environmentPath: './conda.yml'
   # Project root folder. Point to the folder containing manage.py file.
   projectRoot: $(System.DefaultWorkingDirectory)
   # Python version: 3.9.12
