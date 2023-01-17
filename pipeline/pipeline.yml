@@ -18,7 +18,7 @@ variables:
   pythonVersion: '3.9.12'
   resourceGroup: 'rizofeathr11'
   workspaceName: 'mlw-basicex-prod-202212150056'
-  AzDoServiceConnectionName: 'Rizo-R'
+  AzDoServiceConnectionName: 'ADOServiceConnection'
 
 stages:
 - stage: Feathr
