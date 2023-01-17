@@ -37,6 +37,7 @@ stages:
     # - script: |
     #     python create_environment.py
     - script: |
+        echo "HELLO!"
         ls -al
         conda init bash
         conda create env -n $(environmentName) --file $(environmentPath)
@@ -44,6 +45,7 @@ stages:
       workingDirectory: $(projectRoot)
   
   - job: RunFeathr
+    dependsOn: CreateEnvironment
     pool:
       vmImage: $(vmImageName)
     steps:
