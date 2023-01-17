@@ -35,8 +35,9 @@ stages:
       displayName: 'Use Python $(pythonVersion)'
 
     # - script: |
-    #    python create_environment.py
+    #     python create_environment.py
     - script: |
+        conda init bash
         conda create env -n $(environmentName) --file $(environmentPath)
         conda activate $(environmentName)
       workingDirectory: $(projectRoot)
