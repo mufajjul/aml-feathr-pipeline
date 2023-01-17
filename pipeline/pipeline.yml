@@ -34,11 +34,11 @@ stages:
         versionSpec: '$(pythonVersion)'
       displayName: 'Use Python $(pythonVersion)'
 
-    - script: |
-        python create_environment.py
     # - script: |
-    #     conda create env -n $(environmentName) --file $(environmentPath)
-    #     conda activate $(environmentName)
+    #    python create_environment.py
+    - script: |
+        conda create env -n $(environmentName) --file $(environmentPath)
+        conda activate $(environmentName)
       workingDirectory: $(projectRoot)
   
   - job: RunFeathr
