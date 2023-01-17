@@ -11,11 +11,7 @@ variables:
   # Environment name
   environmentName: 'feathr-env'
   # Environment file path (.yml)
-<<<<<<< HEAD
-  environmentPath: './conda.yml'
-=======
   environmentPath: 'pipeline/conda.yml'
->>>>>>> 14bb34ead6c5f2be3b527c1d3e815f24368a9942
   # Project root folder. Point to the folder containing manage.py file.
   projectRoot: $(System.DefaultWorkingDirectory)
   # Python version: 3.9.12
@@ -23,7 +19,6 @@ variables:
   resourceGroup: 'rizofeathr11'
   workspaceName: 'mlw-basicex-prod-202212150056'
   AzDoServiceConnectionName: 'ADOServiceConnection'
-<<<<<<< HEAD
 
 stages:
 - stage: Feathr
@@ -42,6 +37,7 @@ stages:
     # - script: |
     #     python create_environment.py
     - script: |
+        echo "HELLO!"
         ls -al
         conda init bash
         conda create env -n $(environmentName) --file $(environmentPath)
@@ -124,69 +120,3 @@ jobs:
     displayName: 'Save Job URI'
     env:
       MLJOB_RUNURI: ${{ steps.create-job-step.outputs.RUNURI }}
-=======
-
-stages:
-- stage: Feathr
-  displayName: Feathr stage
-  jobs:
-
-  - job: CreateEnvironment
-    pool:
-      vmImage: $(vmImageName)
-    steps:
-    - task: UsePythonVersion@0
-      inputs:
-        versionSpec: '$(pythonVersion)'
-      displayName: 'Use Python $(pythonVersion)'
-
-    # - script: |
-    #     python create_environment.py
-    - script: |
-        echo "HELLO!"
-        ls -al
-        conda init bash
-        conda create env -n $(environmentName) --file $(environmentPath)
-        conda activate $(environmentName)
-      workingDirectory: $(projectRoot)
-  
-  - job: RunFeathr
-    dependsOn: CreateEnvironment
-    pool:
-      vmImage: $(vmImageName)
-    steps:
-    - task: UsePythonVersion@0
-      inputs:
-        versionSpec: '$(pythonVersion)'
-      displayName: 'Use Python $(pythonVersion)'
-
-    - script: |
-        python feathr.py
-      workingDirectory: $(projectRoot)
-
-- stage: AML
-  displayName: 'AML'
-  dependsOn: Feathr
-  condition: succeeded()
-  jobs:
-  - job: AMLJob
-    pool:
-      vmImage: $(vmImageName)
-    steps:
-    - task: UsePythonVersion@0
-      inputs:
-        versionSpec: '$(pythonVersion)'
-      displayName: 'Use Python $(pythonVersion)'
-
-    - task: AzureCLI@2
-      displayName: 'Azure CLI'
-      inputs:
-        azureSubscription: '$(AzDoServiceConnectionName)'
-        scriptType: ps
-        scriptLocation: inlineScript
-        inlineScript: |
-          #To install the Machine Learning CLI extension
-          az extension add -n azure-cli-ml
-          az ml job create --file aml_job.yml --resource-group $(resourceGroup) --workspace-name $(workspaceName)
-        
->>>>>>> 14bb34ead6c5f2be3b527c1d3e815f24368a9942
