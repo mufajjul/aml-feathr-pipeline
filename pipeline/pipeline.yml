@@ -43,6 +43,7 @@ stages:
     #     conda init bash
     #     conda env create --file $(environmentPath)
     #     conda activate $(environmentName)
+    # 
     - script: |
         pip install -r $(requirementsPath)
       workingDirectory: $(projectRoot)
