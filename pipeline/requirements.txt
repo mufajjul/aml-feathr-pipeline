@@ -1,7 +1,6 @@
-pyarrow
 numpy==1.22.0
 pandavro 
-git+https://github.com/feathr-ai/feathr.git#subdirectory=feathr_project&egg=feathr[notebook] 
+feathr
 scikit-learn 
 azure-core
 ipykernel
