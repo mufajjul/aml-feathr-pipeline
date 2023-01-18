@@ -45,7 +45,7 @@ stages:
     #     conda activate $(environmentName)
     # 
     - script: |
-        pip install -r $(requirementsPath)
+        pip install -r $(requirementsPath) --use-deprecated=legacy-resolver
       workingDirectory: $(projectRoot)
   
   - job: RunFeathr
