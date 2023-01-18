@@ -9,7 +9,7 @@ variables:
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
   # Environment name
-  environmentName: 'feathr-env'
+  # environmentName: 'feathr-env'
   # Environment file path (.yml)
   environmentPath: 'pipeline/conda.yml'
   # Project root folder. Point to the folder containing manage.py file.
@@ -39,9 +39,8 @@ stages:
     - script: |
         echo "HELLO!"
         ls -al
-        conda update conda
         conda init bash
-        conda create env -n $(environmentName) --file $(environmentPath)
+        conda env create --file $(environmentPath)
         conda activate $(environmentName)
       workingDirectory: $(projectRoot)
   
@@ -83,3 +82,4 @@ stages:
           #To install the Machine Learning CLI extension
           az extension add -n azure-cli-ml
           az ml job create --file aml_job.yml --resource-group $(resourceGroup) --workspace-name $(workspaceName)
+        
