@@ -44,8 +44,8 @@ stages:
     #     conda env create --file $(environmentPath)
     #     conda activate $(environmentName)
     - script: |
-      pip install -r $(requirementsPath)
-    workingDirectory: $(projectRoot)
+        pip install -r $(requirementsPath)
+      workingDirectory: $(projectRoot)
   
   - job: RunFeathr
     dependsOn: CreateEnvironment
