@@ -12,6 +12,7 @@ variables:
   # environmentName: 'feathr-env'
   # Environment file path (.yml)
   environmentPath: 'pipeline/conda.yml'
+  requirementsPath: 'pipeline/requirements.txt'
   # Project root folder. Point to the folder containing manage.py file.
   projectRoot: $(System.DefaultWorkingDirectory)
   # Python version: 3.9.12
@@ -36,13 +37,15 @@ stages:
 
     # - script: |
     #     python create_environment.py
+    # - script: |
+    #     echo "HELLO!"
+    #     ls -al
+    #     conda init bash
+    #     conda env create --file $(environmentPath)
+    #     conda activate $(environmentName)
     - script: |
-        echo "HELLO!"
-        ls -al
-        conda init bash
-        conda env create --file $(environmentPath)
-        conda activate $(environmentName)
-      workingDirectory: $(projectRoot)
+      pip install -r $(requirementsPath)
+    workingDirectory: $(projectRoot)
   
   - job: RunFeathr
     dependsOn: CreateEnvironment
