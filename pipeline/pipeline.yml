@@ -39,6 +39,7 @@ stages:
     - script: |
         echo "HELLO!"
         ls -al
+        conda update conda
         conda init bash
         conda create env -n $(environmentName) --file $(environmentPath)
         conda activate $(environmentName)
