@@ -46,16 +46,17 @@ stages:
     # 
     - script: |
         pip install -r $(requirementsPath) --use-deprecated=legacy-resolver
-      workingDirectory: $(projectRoot)
-  
-  - job: RunFeathr
-    dependsOn: CreateEnvironment
-    pool:
-      vmImage: $(vmImageName)
-    steps:
-    - script: |
         python pipeline/feathr.py
       workingDirectory: $(projectRoot)
+  
+  # - job: RunFeathr
+  #   dependsOn: CreateEnvironment
+  #   pool:
+  #     vmImage: $(vmImageName)
+  #   steps:
+  #   - script: |
+  #       python pipeline/feathr.py
+  #     workingDirectory: $(projectRoot)
 
 - stage: AML
   displayName: 'AML'
