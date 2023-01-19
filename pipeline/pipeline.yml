@@ -59,7 +59,7 @@ stages:
       displayName: 'Use Python $(pythonVersion)'
 
     - script: |
-        python feathr.py
+        python pipeline/feathr.py
       workingDirectory: $(projectRoot)
 
 - stage: AML
