@@ -46,7 +46,7 @@ stages:
   #     conda activate $(environmentName)
   # 
       - script: |
-          # pip install -r $(requirementsPath) --use-deprecated=legacy-resolver
+          pip install -r $(requirementsPath) --use-deprecated=legacy-resolver
           echo 1 "$RESOURCE_PREFIX" 2 "$(AZURE_CLIENT_ID)" 3 "$(AZURE_TENANT_ID)" 4 "$(AZURE_CLIENT_SECRET)"
           python pipeline/main.py --resource_prefix $(RESOURCE_PREFIX) --azure_client_id $(AZURE_CLIENT_ID) --azure_tenant_id $(AZURE_TENANT_ID) --azure_client_secret $(AZURE_CLIENT_SECRET)
         workingDirectory: $(projectRoot)
