@@ -29,26 +29,26 @@ stages:
   - job: CreateEnvironment
     pool:
       vmImage: $(vmImageName)
-    variables:
-      - group: env-variables
-      steps:
-        - task: UsePythonVersion@0
-          inputs:
-            versionSpec: '$(pythonVersion)'
-          displayName: 'Use Python $(pythonVersion)'
-    # - script: |
-    #     python create_environment.py
-    # - script: |
-    #     echo "HELLO!"
-    #     ls -al
-    #     conda init bash
-    #     conda env create --file $(environmentPath)
-    #     conda activate $(environmentName)
-    # 
-        - script: |
-            pip install -r $(requirementsPath) --use-deprecated=legacy-resolver
-            python pipeline/main.py --resource_prefix $RESOURCE_PREFIX --azure_client_id $AZURE_CLIENT_ID --azure_tenant_id $AZURE_TENANT_ID --azure_client_secret $AZURE_CLIENT_SECRET
-          workingDirectory: $(projectRoot)
+    # variables:
+    #   - group: env-variables
+    steps:
+      - task: UsePythonVersion@0
+        inputs:
+          versionSpec: '$(pythonVersion)'
+        displayName: 'Use Python $(pythonVersion)'
+  # - script: |
+  #     python create_environment.py
+  # - script: |
+  #     echo "HELLO!"
+  #     ls -al
+  #     conda init bash
+  #     conda env create --file $(environmentPath)
+  #     conda activate $(environmentName)
+  # 
+      - script: |
+          pip install -r $(requirementsPath) --use-deprecated=legacy-resolver
+          python pipeline/main.py --resource_prefix $RESOURCE_PREFIX --azure_client_id $AZURE_CLIENT_ID --azure_tenant_id $AZURE_TENANT_ID --azure_client_secret $AZURE_CLIENT_SECRET
+        workingDirectory: $(projectRoot)
   
   # - job: RunFeathr
   #   dependsOn: CreateEnvironment
