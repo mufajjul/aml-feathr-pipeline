@@ -48,6 +48,7 @@ RESOURCE_PREFIX = args.resource_prefix
 os.environ['AZURE_CLIENT_ID'] = args.azure_client_id
 os.environ['AZURE_TENANT_ID'] = args.azure_tenant_id
 os.environ['AZURE_CLIENT_SECRET'] = args.azure_client_secret
+print("AZURE_TENANT_ID:", os.environ['AZURE_TENANT_ID'])
 # RESOURCE_PREFIX = "rizodeploy11"  # TODO fill the value used to deploy the resources via ARM template
 PROJECT_NAME = "feathr_getting_started"
 LOCATION = "canadacentral"
