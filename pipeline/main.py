@@ -15,6 +15,7 @@ import pyspark.sql.functions as F
 
 print("Log-B")
 
+import feathr
 from feathr import (
     FeathrClient,
     # Feature data types
