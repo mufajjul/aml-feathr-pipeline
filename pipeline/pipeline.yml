@@ -46,7 +46,7 @@ stages:
     # 
     - script: |
         pip install -r $(requirementsPath) --use-deprecated=legacy-resolver
-        python pipeline/feathr.py
+        python pipeline/main.py
       workingDirectory: $(projectRoot)
   
   # - job: RunFeathr
@@ -55,7 +55,7 @@ stages:
   #     vmImage: $(vmImageName)
   #   steps:
   #   - script: |
-  #       python pipeline/feathr.py
+  #       python pipeline/main.py
   #     workingDirectory: $(projectRoot)
 
 - stage: AML
