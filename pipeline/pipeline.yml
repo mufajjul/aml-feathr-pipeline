@@ -29,8 +29,8 @@ stages:
   - job: CreateEnvironment
     pool:
       vmImage: $(vmImageName)
-    # variables:
-    #   - group: env-variables
+    variables:
+      - group: env-variables
     steps:
       - task: UsePythonVersion@0
         inputs:
