@@ -47,8 +47,8 @@ stages:
   # 
       - script: |
           pip install -r $(requirementsPath) --use-deprecated=legacy-resolver
-          echo 1 $env:RESOURCE_PREFIX 2 $env:AZURE_CLIENT_ID 3 $env:AZURE_TENANT_ID 4 $env:AZURE_CLIENT_SECRET
-          python pipeline/main.py --resource_prefix $RESOURCE_PREFIX --azure_client_id $AZURE_CLIENT_ID --azure_tenant_id $AZURE_TENANT_ID --azure_client_secret $AZURE_CLIENT_SECRET
+          echo 1 $env:RESOURCE_PREFIX 2 "$AZURE_CLIENT_ID" 3 "$env:AZURE_TENANT_ID" 4 $env:AZURE_CLIENT_SECRET
+          # python pipeline/main.py --resource_prefix $RESOURCE_PREFIX --azure_client_id $AZURE_CLIENT_ID --azure_tenant_id $AZURE_TENANT_ID --azure_client_secret $AZURE_CLIENT_SECRET
         workingDirectory: $(projectRoot)
   
   # - job: RunFeathr
