@@ -1,6 +1,18 @@
 import argparse
 import os
 
+parser = argparse.ArgumentParser()
+parser.add_argument("--resource_prefix", type=str, help="resource prefix")
+parser.add_argument("--azure_client_id", type=str)
+parser.add_argument("--azure_tenant_id", type=str)
+parser.add_argument("--azure_client_secret", type=str)
+args = parser.parse_args()
+RESOURCE_PREFIX = args.resource_prefix
+os.environ['AZURE_CLIENT_ID'] = args.azure_client_id
+os.environ['AZURE_TENANT_ID'] = args.azure_tenant_id
+os.environ['AZURE_CLIENT_SECRET'] = args.azure_client_secret
+print("AZURE_TENANT_ID:", os.environ['AZURE_TENANT_ID'])
+
 from datetime import timedelta
 from math import sqrt
 from pathlib import Path
