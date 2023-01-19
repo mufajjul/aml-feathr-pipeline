@@ -2,7 +2,6 @@ trigger:
 - main
 
 variables:
-  - group: env-variables
   # Azure Resource Manager connection created during pipeline creation
   # azureServiceConnectionId: '{{ azureServiceConnection.Id }}'
   # Web app name
@@ -21,6 +20,7 @@ variables:
   resourceGroup: 'rizofeathr11'
   workspaceName: 'mlw-basicex-prod-202212150056'
   AzDoServiceConnectionName: 'ADOServiceConnection'
+  - group: env-variables
 
 stages:
 - stage: Feathr
