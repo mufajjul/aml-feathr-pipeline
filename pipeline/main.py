@@ -68,14 +68,6 @@ REGISTER_FEATURES = True
 # (For the notebook test pipeline) If true, use ScrapBook package to collect the results.
 SCRAP_RESULTS = False
 
-os.environ['AZURE_CLIENT_ID'] = "7c02dbef-0dd5-4b6e-8eb3-6aed7cd5fce9"
-os.environ['AZURE_TENANT_ID'] = "72f988bf-86f1-41af-91ab-2d7cd011db47"
-os.environ['AZURE_CLIENT_SECRET'] = "2ZF8Q~xIGoL4w1VodwL_~LiK_~MhJ2.Eis3Akcti"
-os.environ["ADLS_ACCOUNT"]=f"{RESOURCE_PREFIX}dls"
-# os.environ["ADLS_KEY"] = "ulFaaRcSfljorfPUtRR3Dg83SNe6h5sdNz3AUp3/E3UeUvn5PLDcgBND44yzBajKH5t4w6DlThJ5+AStthkbOg=="
-os.environ["PYSPARK_ALLOW_INSECURE_GATEWAY"] = "1"
-os.environ["PYSPARK_SUBMIT_ARGS"] = "--master local[3] pyspark-shell"
-
 
 # Create Feathr config file
 
