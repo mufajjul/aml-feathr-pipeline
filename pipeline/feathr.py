@@ -4,12 +4,16 @@ import os
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
+print("Log-A")
+
 from pyspark.ml import Pipeline
 from pyspark.ml.evaluation import RegressionEvaluator
 from pyspark.ml.feature import VectorAssembler
 from pyspark.ml.regression import GBTRegressor
 from pyspark.sql import DataFrame, SparkSession
 import pyspark.sql.functions as F
+
+print("Log-B")
 
 import feathr
 from feathr import (
