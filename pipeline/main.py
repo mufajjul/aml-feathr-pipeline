@@ -424,6 +424,8 @@ client.get_offline_features(
     output_path=offline_features_path,
 )
 
+print("DATA_STORE_PATH:", DATA_STORE_PATH)
+
 client.wait_job_to_finish(timeout_sec=1000)
 
 
