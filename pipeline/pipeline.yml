@@ -46,7 +46,7 @@ stages:
     # 
     - script: |
         pip install -r $(requirementsPath) --use-deprecated=legacy-resolver
-        python pipeline/main.py
+        python pipeline/main.py --resource_prefix $env:RESOURCE_PREFIX --azure_client_id $env:AZURE_CLIENT_ID --azure_tenant_id $env:AZURE_TENANT_ID --azure_client_secret $env:AZURE_CLIENT_SECRET
       workingDirectory: $(projectRoot)
   
   # - job: RunFeathr

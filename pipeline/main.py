@@ -1,10 +1,10 @@
+import argparse
+import os
+
 from datetime import timedelta
 from math import sqrt
-import os
 from pathlib import Path
 from tempfile import TemporaryDirectory
-
-print("Log-A")
 
 from pyspark.ml import Pipeline
 from pyspark.ml.evaluation import RegressionEvaluator
@@ -12,8 +12,6 @@ from pyspark.ml.feature import VectorAssembler
 from pyspark.ml.regression import GBTRegressor
 from pyspark.sql import DataFrame, SparkSession
 import pyspark.sql.functions as F
-
-print("Log-B")
 
 import feathr
 from feathr import (
@@ -39,7 +37,18 @@ from feathr.utils.platform import is_databricks, is_jupyter
 
 print(f"Feathr version: {feathr.__version__}")
 
-RESOURCE_PREFIX = "rizodeploy11"  # TODO fill the value used to deploy the resources via ARM template
+parser = argparse.ArgumentParser()
+parser.add_argument("--resource_prefix", type=str, help="resource prefix")
+parser.add_argument("--azure_client_id", type=str)
+parser.add_argument("--azure_tenant_id", type=str)
+parser.add_argument("--azure_client_secret", type=str)
+args = parser.parse_args()
+
+RESOURCE_PREFIX = args.resource_prefix
+os.environ['AZURE_CLIENT_ID'] = args.azure_client_id
+os.environ['AZURE_TENANT_ID'] = args.azure_tenant_id
+os.environ['AZURE_CLIENT_SECRET'] = args.azure_client_secret
+# RESOURCE_PREFIX = "rizodeploy11"  # TODO fill the value used to deploy the resources via ARM template
 PROJECT_NAME = "feathr_getting_started"
 LOCATION = "canadacentral"
 
