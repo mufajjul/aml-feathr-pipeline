@@ -237,6 +237,7 @@ if 'REDIS_PASSWORD' not in os.environ:
     retrieved_secret = secret_client.get_secret('FEATHR-ONLINE-STORE-CONN').value
     os.environ['REDIS_PASSWORD'] = retrieved_secret.split(",")[1].split("password=", 1)[1]
 
+FEATHR_CONFIG_PATH = None
 if FEATHR_CONFIG_PATH:
     config_path = FEATHR_CONFIG_PATH
 else:
