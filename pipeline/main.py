@@ -54,7 +54,7 @@ PROJECT_NAME = "feathr_getting_started"
 LOCATION = "canadacentral"
 
 # Currently support: 'azure_synapse', 'databricks', and 'local' 
-SPARK_CLUSTER = "azure_synapse"
+SPARK_CLUSTER = "local"
 
 # TODO fill values to use databricks cluster:
 DATABRICKS_CLUSTER_ID = None     # Set Databricks cluster id to use an existing cluster
