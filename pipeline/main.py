@@ -38,23 +38,27 @@ from feathr.utils.platform import is_databricks, is_jupyter
 print(f"Feathr version: {feathr.__version__}")
 
 parser = argparse.ArgumentParser()
-parser.add_argument("--resource_prefix", type=str, help="resource prefix")
+parser.add_argument("--resource_prefix", type=str, help="Resource prefix used for all resource names (not necessarily resource group name).")
+parser.add_argument("--resource_group", type=str, help="The name of the resource group.")
 parser.add_argument("--azure_client_id", type=str)
 parser.add_argument("--azure_tenant_id", type=str)
 parser.add_argument("--azure_client_secret", type=str)
+parser.add_argument("--azure_subscription_id", type=str)
 args = parser.parse_args()
 
 RESOURCE_PREFIX = args.resource_prefix
+RESOURCE_GROUP = args.resource_group
 os.environ['AZURE_CLIENT_ID'] = args.azure_client_id
 os.environ['AZURE_TENANT_ID'] = args.azure_tenant_id
 os.environ['AZURE_CLIENT_SECRET'] = args.azure_client_secret
+os.environ['AZURE_SUBSCRIPTION_ID'] = args.azure_subscription_id
 print("AZURE_TENANT_ID:", os.environ['AZURE_TENANT_ID'])
 # RESOURCE_PREFIX = "rizodeploy11"  # TODO fill the value used to deploy the resources via ARM template
 PROJECT_NAME = "feathr_getting_started"
 LOCATION = "canadacentral"
 
 # Currently support: 'azure_synapse', 'databricks', and 'local' 
-SPARK_CLUSTER = "local"
+SPARK_CLUSTER = "azure_synapse"
 
 # TODO fill values to use databricks cluster:
 DATABRICKS_CLUSTER_ID = None     # Set Databricks cluster id to use an existing cluster
@@ -62,7 +66,7 @@ DATABRICKS_URL = None   # Set Databricks workspace url to use databricks
 
 # TODO fill values to use Azure Synapse cluster:
 AZURE_SYNAPSE_SPARK_POOL = "spark31"  # Set Azure Synapse Spark pool name
-AZURE_SYNAPSE_URL = r"https://web.azuresynapse.net?workspace=%2friptions%2fa6c2a7cc-d67e-4a1a-b765-983f08c0423a%2fresourceGroups%2frizofeathr11%2fproviders%2fMicrosoft.Synapse%2fworkspaces%2frizodeploy11syws"  # Set Azure Synapse workspace url to use Azure Synapse
+AZURE_SYNAPSE_URL = f"https://web.azuresynapse.net?workspace=%2fsubscriptions%2f{os.environ['AZURE_SUBSCRIPTION_ID']}%2fresourceGroups%2f{RESOURCE_GROUP}%2fproviders%2fMicrosoft.Synapse%2fworkspaces%2f{RESOURCE_PREFIX}syws"  # Set Azure Synapse workspace url to use Azure Synapse
 
 # Data store root path. Could be a local file system path, dbfs or Azure storage path like abfs or wasbs
 DATA_STORE_PATH = TemporaryDirectory().name
