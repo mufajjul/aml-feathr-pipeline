@@ -44,6 +44,7 @@ parser.add_argument("--azure_client_id", type=str)
 parser.add_argument("--azure_tenant_id", type=str)
 parser.add_argument("--azure_client_secret", type=str)
 parser.add_argument("--azure_subscription_id", type=str)
+parser.add_argument("--adls_key", type=str)
 args = parser.parse_args()
 
 RESOURCE_PREFIX = args.resource_prefix
