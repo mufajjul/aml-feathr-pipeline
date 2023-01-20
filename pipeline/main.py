@@ -235,6 +235,7 @@ if 'REDIS_PASSWORD' not in os.environ:
     retrieved_secret = secret_client.get_secret('FEATHR-ONLINE-STORE-CONN').value
     os.environ['REDIS_PASSWORD'] = retrieved_secret.split(",")[1].split("password=", 1)[1]
 
+FEATHR_CONFIG_PATH = None
 if FEATHR_CONFIG_PATH:
     config_path = FEATHR_CONFIG_PATH
 else:
@@ -428,7 +429,7 @@ client.get_offline_features(
     output_path=offline_features_path,
 )
 
-print("DATA_STORE_PATH:", DATA_STORE_PATH)
+print("AZURE_SYNAPSE_URL:", AZURE_SYNAPSE_URL)
 
 client.wait_job_to_finish(timeout_sec=1000)
 
