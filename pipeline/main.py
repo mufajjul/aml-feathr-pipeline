@@ -272,7 +272,6 @@ spark = (
 DATA_FILE_PATH = str(Path(DATA_STORE_PATH, "nyc_taxi.csv"))
 
 df_raw = nyc_taxi.get_spark_df(spark=spark, local_cache_path=DATA_FILE_PATH)
-df_raw.limit(5).toPandas()
 
 TIMESTAMP_COL = "lpep_dropoff_datetime"
 TIMESTAMP_FORMAT = "yyyy-MM-dd HH:mm:ss"
@@ -329,7 +328,9 @@ if client.spark_runtime == "local" or (client.spark_runtime == "databricks" and 
     data_source_path = DATA_FILE_PATH
 else:
     # Otherwise, upload the local file to the cloud storage (either dbfs or adls).
-    data_source_path = client.feathr_spark_launcher.upload_or_get_cloud_path(DATA_FILE_PATH)    
+    data_source_path = client.feathr_spark_launcher.upload_or_get_cloud_path(DATA_FILE_PATH) 
+
+print("data_source_path", data_source_path)   
 
 
 def preprocessing(df: DataFrame) -> DataFrame:
