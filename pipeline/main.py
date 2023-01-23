@@ -188,7 +188,7 @@ spark_config:
     # This is the location of the runtime jar for Spark job submission. If you have compiled the runtime yourself, you need to specify this location.
     # Or use https://azurefeathrstorage.blob.core.windows.net/public/feathr-assembly-LATEST.jar so you don't have to compile the runtime yourself
     # Local path, path starting with `http(s)://` or `dbfs://` are supported. If not specified, the latest jar from Maven would be used
-    feathr_runtime_location: "https://azurefeathrstorage.blob.core.windows.net/public/feathr-assembly-LATEST.jar"
+    # feathr_runtime_location: "https://azurefeathrstorage.blob.core.windows.net/public/feathr-assembly-LATEST.jar"
 
 online_store:
   redis:
