@@ -1,6 +1,7 @@
 numpy
 pandavro 
-git+https://github.com/feathr-ai/feathr.git#subdirectory=feathr_project&egg=feathr[notebook] 
+# git+https://github.com/feathr-ai/feathr.git#subdirectory=feathr_project&egg=feathr[notebook]
+feathr==0.9.0rc 
 scikit-learn 
 azure-core
 ipykernel
