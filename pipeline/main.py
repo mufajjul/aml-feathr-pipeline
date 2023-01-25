@@ -508,3 +508,4 @@ materialized_feature_values = client.multi_get_online_features(
 materialized_feature_values
 
 
+print("Successfully registered features!")
