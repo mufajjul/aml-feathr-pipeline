@@ -32,9 +32,10 @@ from feathr import (
 # from feathr.datasets import nyc_taxi
 from feathr.spark_provider.feathr_configurations import SparkExecutionConfiguration
 # from feathr.utils.config import generate_config
-from feathr.utils.job_utils import get_result_df
+# from feathr.utils.job_utils import get_result_df
 # from feathr.utils.platform import is_databricks, is_jupyter
 import nyc_taxi
+from job_utils import get_result_df
 
 print(f"Feathr version: {feathr.__version__}")
 
