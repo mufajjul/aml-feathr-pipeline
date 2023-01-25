@@ -35,7 +35,6 @@ from feathr.spark_provider.feathr_configurations import SparkExecutionConfigurat
 from feathr.utils.job_utils import get_result_df
 # from feathr.utils.platform import is_databricks, is_jupyter
 import nyc_taxi
-from utils import is_databricks, is_jupyter
 
 print(f"Feathr version: {feathr.__version__}")
 
