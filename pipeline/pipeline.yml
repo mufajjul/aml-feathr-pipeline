@@ -86,6 +86,6 @@ stages:
           az extension remove -n ml
           echo "Uninstalled old AzureML CLI."
           az extension add -n ml
-          echo "Installed new AzureML CLI.""
+          echo "Installed new AzureML CLI."
           az ml job create --file aml_job.yml --resource-group $(resourceGroup) --workspace-name $(workspaceName)
         
