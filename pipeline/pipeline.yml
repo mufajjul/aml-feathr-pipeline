@@ -46,8 +46,8 @@ stages:
   #     conda activate $(environmentName)
   # 
       - script: |
-          pip install -r $(requirementsPath) --use-deprecated=legacy-resolver
-          python pipeline/main.py --resource_prefix $(RESOURCE_PREFIX) --resource_group $(RESOURCE_GROUP) --azure_subscription_id $(AZURE_SUBSCRIPTION_ID) --azure_client_id $(AZURE_CLIENT_ID) --azure_tenant_id $(AZURE_TENANT_ID) --azure_client_secret $(AZURE_CLIENT_SECRET) --adls_key $(ADLS_KEY)
+          # pip install -r $(requirementsPath) --use-deprecated=legacy-resolver
+          # python pipeline/main.py --resource_prefix $(RESOURCE_PREFIX) --resource_group $(RESOURCE_GROUP) --azure_subscription_id $(AZURE_SUBSCRIPTION_ID) --azure_client_id $(AZURE_CLIENT_ID) --azure_tenant_id $(AZURE_TENANT_ID) --azure_client_secret $(AZURE_CLIENT_SECRET) --adls_key $(ADLS_KEY)
         workingDirectory: $(projectRoot)
   
   # - job: RunFeathr
@@ -77,10 +77,12 @@ stages:
       displayName: 'Azure CLI'
       inputs:
         azureSubscription: '$(AzDoServiceConnectionName)'
-        scriptType: ps
+        # scriptType: ps
+        scriptType: pscore
         scriptLocation: inlineScript
         inlineScript: |
           #To install the Machine Learning CLI extension
+          az account show
           az extension add -n azure-cli-ml
           az ml job create --file aml_job.yml --resource-group $(resourceGroup) --workspace-name $(workspaceName)
         
