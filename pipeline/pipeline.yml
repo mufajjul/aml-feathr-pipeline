@@ -82,7 +82,10 @@ stages:
         scriptLocation: inlineScript
         inlineScript: |
           #To install the Machine Learning CLI extension
-          az account show
-          az extension add -n azure-cli-ml
+          az extension remove -n azure-cli-ml
+          az extension remove -n ml
+          echo "Uninstalled old AzureML CLI."
+          az extension add -n ml
+          echo "Installed new AzureML CLI.""
           az ml job create --file aml_job.yml --resource-group $(resourceGroup) --workspace-name $(workspaceName)
         
