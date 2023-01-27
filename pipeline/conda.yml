@@ -1,5 +1,3 @@
-name: feathr-env
-
 channels:
   - conda-forge
   - nodefaults
@@ -19,5 +17,4 @@ dependencies:
         - azureml-dataset-runtime
         - azure-ai-ml
         - mlflow
-        - azureml-mlflow
         - mltable
