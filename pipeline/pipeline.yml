@@ -80,7 +80,7 @@ stages:
     #   displayName: 'Use Python $(pythonVersion)'
     -task:
       - script: conda activate $(environmentName)
-      displayName: Activate Anaconda environment
+        displayName: Activate Anaconda environment
 
     # Ask Mufy about team access level SP.
     - task: AzureCLI@2
