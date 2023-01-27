@@ -22,7 +22,6 @@ variables:
   AzDoServiceConnectionName: 'ADOServiceConnection'
   DataPath: 'azureml://subscriptions/a6c2a7cc-d67e-4a1a-b765-983f08c0423a/resourcegroups/rizofeathr11/workspaces/mlw-basicex-prod-202212150056/datastores/workspaceblobstore/paths/LocalUpload/6bc06dfb068a45eff911b284aa1dd064/data.csv'
   variableGroup: 'env-variables'
-  - group: $(variableGroup)
 
 stages:
 
@@ -81,7 +80,9 @@ stages:
       #     versionSpec: '$(pythonVersion)'
       #   displayName: 'Use Python $(pythonVersion)'
       - script: |
+          echo "Hi"
           conda init bash
+          echo "Good"
           conda activate $(environmentName)
         displayName: Activate Anaconda environment
 
