@@ -78,7 +78,9 @@ stages:
       #   inputs:
       #     versionSpec: '$(pythonVersion)'
       #   displayName: 'Use Python $(pythonVersion)'
-      - script: conda activate $(environmentName)
+      - script: |
+          conda env create -n test-env
+          conda activate $(environmentName)
         displayName: Activate Anaconda environment
 
       # Ask Mufy about team access level SP.
