@@ -78,7 +78,6 @@ stages:
     #   inputs:
     #     versionSpec: '$(pythonVersion)'
     #   displayName: 'Use Python $(pythonVersion)'
-    -task:
       - script: conda activate $(environmentName)
         displayName: Activate Anaconda environment
 
