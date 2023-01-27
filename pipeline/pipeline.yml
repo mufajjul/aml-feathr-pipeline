@@ -79,7 +79,7 @@ stages:
       #     versionSpec: '$(pythonVersion)'
       #   displayName: 'Use Python $(pythonVersion)'
       - script: |
-          conda env create -n test-env
+          conda env create -n "asd" --file $(environmentPath)
           conda activate $(environmentName)
         displayName: Activate Anaconda environment
 
