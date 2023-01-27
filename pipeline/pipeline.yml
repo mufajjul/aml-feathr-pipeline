@@ -48,7 +48,7 @@ stages:
       #   inputs:
       #     versionSpec: '$(pythonVersion)'
       #   displayName: 'Use Python $(pythonVersion)'
-      - script: conda create -n $(environmentName)
+      - script: conda env create -n $(environmentName) --file $(environmentPath)
         displayName: Create Anaconda environment
   #     python create_environment.py
   # - script: |
@@ -63,7 +63,7 @@ stages:
           echo Good!
           # pip install -r $(requirementsPath) --use-deprecated=legacy-resolver
           # $(dataPath) = python pipeline/main.py --resource_prefix $(RESOURCE_PREFIX) --resource_group $(RESOURCE_GROUP) --azure_subscription_id $(AZURE_SUBSCRIPTION_ID) --azure_client_id $(AZURE_CLIENT_ID) --azure_tenant_id $(AZURE_TENANT_ID) --azure_client_secret $(AZURE_CLIENT_SECRET) --adls_key $(ADLS_KEY)
-        displayName: Try it out
+        displayName: Run Feathr
         # workingDirectory: $(projectRoot)
   
   # - job: RunFeathr
