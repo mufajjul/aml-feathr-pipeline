@@ -74,11 +74,11 @@ stages:
     pool:
       vmImage: $(vmImageName)
     steps:
-    # - task: UsePythonVersion@0
-    #   inputs:
-    #     versionSpec: '$(pythonVersion)'
-    #   displayName: 'Use Python $(pythonVersion)'
-      - script: conda activate $(environmentName)
+      # - task: UsePythonVersion@0
+      #   inputs:
+      #     versionSpec: '$(pythonVersion)'
+      #   displayName: 'Use Python $(pythonVersion)'
+      - script: conda env activate $(environmentName)
         displayName: Activate Anaconda environment
 
     # Ask Mufy about team access level SP.
