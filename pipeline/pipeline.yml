@@ -79,7 +79,7 @@ stages:
       #     versionSpec: '$(pythonVersion)'
       #   displayName: 'Use Python $(pythonVersion)'
       - script: |
-          source ~/anaconda3/etc/profile.d/conda.sh
+          conda init bash
           conda activate $(environmentName)
         displayName: Activate Anaconda environment
 
