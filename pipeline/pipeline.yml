@@ -20,7 +20,7 @@ variables:
   resourceGroup: 'rizofeathr11'
   workspaceName: 'mlw-basicex-prod-202212150056'
   AzDoServiceConnectionName: 'ADOServiceConnection'
-  DataPath: path/to/data
+  DataPath: 'azureml://subscriptions/a6c2a7cc-d67e-4a1a-b765-983f08c0423a/resourcegroups/rizofeathr11/workspaces/mlw-basicex-prod-202212150056/datastores/workspaceblobstore/paths/LocalUpload/6bc06dfb068a45eff911b284aa1dd064/data.csv'
 
 stages:
 
@@ -79,7 +79,7 @@ stages:
       #     versionSpec: '$(pythonVersion)'
       #   displayName: 'Use Python $(pythonVersion)'
       - script: |
-          conda env create -n "asd" --file $(environmentPath)
+          source ~/anaconda3/etc/profile.d/conda.sh
           conda activate $(environmentName)
         displayName: Activate Anaconda environment
 
