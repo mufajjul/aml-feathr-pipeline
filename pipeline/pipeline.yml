@@ -20,8 +20,10 @@ variables:
   resourceGroup: 'rizofeathr11'
   workspaceName: 'mlw-basicex-prod-202212150056'
   AzDoServiceConnectionName: 'ADOServiceConnection'
+  DataPath: path/to/data
 
 stages:
+
 - stage: Feathr
   displayName: Feathr stage
   jobs:
@@ -32,11 +34,12 @@ stages:
     variables:
       - group: env-variables
     steps:
-      - task: UsePythonVersion@0
-        inputs:
-          versionSpec: '$(pythonVersion)'
-        displayName: 'Use Python $(pythonVersion)'
-  # - script: |
+      # - task: UsePythonVersion@0
+      #   inputs:
+      #     versionSpec: '$(pythonVersion)'
+      #   displayName: 'Use Python $(pythonVersion)'
+      - script: conda env create --file conda.yml
+        displayName: Create Anaconda environment
   #     python create_environment.py
   # - script: |
   #     echo "HELLO!"
@@ -47,7 +50,7 @@ stages:
   # 
       - script: |
           # pip install -r $(requirementsPath) --use-deprecated=legacy-resolver
-          # python pipeline/main.py --resource_prefix $(RESOURCE_PREFIX) --resource_group $(RESOURCE_GROUP) --azure_subscription_id $(AZURE_SUBSCRIPTION_ID) --azure_client_id $(AZURE_CLIENT_ID) --azure_tenant_id $(AZURE_TENANT_ID) --azure_client_secret $(AZURE_CLIENT_SECRET) --adls_key $(ADLS_KEY)
+          # $(dataPath) = python pipeline/main.py --resource_prefix $(RESOURCE_PREFIX) --resource_group $(RESOURCE_GROUP) --azure_subscription_id $(AZURE_SUBSCRIPTION_ID) --azure_client_id $(AZURE_CLIENT_ID) --azure_tenant_id $(AZURE_TENANT_ID) --azure_client_secret $(AZURE_CLIENT_SECRET) --adls_key $(ADLS_KEY)
         workingDirectory: $(projectRoot)
   
   # - job: RunFeathr
@@ -73,6 +76,7 @@ stages:
         versionSpec: '$(pythonVersion)'
       displayName: 'Use Python $(pythonVersion)'
 
+    # Ask Mufy about team access level SP.
     - task: AzureCLI@2
       displayName: 'Azure CLI'
       inputs:

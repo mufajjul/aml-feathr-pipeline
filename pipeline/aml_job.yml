@@ -6,7 +6,7 @@ command: >-
   --registered_model_name ${{inputs.registered_model_name}}
 inputs:
   data_path: 
-    type: string
+    type: uri_file
   registered_model_name: 
     type: string
 # environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
