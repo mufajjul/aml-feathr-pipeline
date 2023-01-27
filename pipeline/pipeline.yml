@@ -48,7 +48,7 @@ stages:
       #   inputs:
       #     versionSpec: '$(pythonVersion)'
       #   displayName: 'Use Python $(pythonVersion)'
-      - script: conda env create -n $(environmentName)
+      - script: conda create env -n $(environmentName) 
         displayName: Create Anaconda environment
   #     python create_environment.py
   # - script: |
