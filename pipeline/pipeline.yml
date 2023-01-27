@@ -2,26 +2,37 @@ trigger:
 - main
 
 variables:
-  # Azure Resource Manager connection created during pipeline creation
-  # azureServiceConnectionId: '{{ azureServiceConnection.Id }}'
+  - group: env-variables
   # Web app name
-  webAppName: 'aml-feathr'
+  - name: webAppName
+    value: 'aml-feathr'
   # Agent VM image name
-  vmImageName: 'ubuntu-latest'
+  - name: vmImageName
+    value: 'ubuntu-latest'
   # Environment name
-  environmentName: 'feathr-env'
+  - name: environmentName
+    value: 'feathr-env'
   # Environment file path (.yml)
-  environmentPath: 'pipeline/conda.yml'
-  # requirementsPath: 'pipeline/requirements.txt'
+  - name: environmentPath
+    value: 'pipeline/conda.yml'
+  # Python version: 3.9.12
+  - name: pythonVersion
+    value: '3.9.12'
+  # Resource group name
+  - name: resourceGroup
+    value: 'rizofeathr11'
+  # AML workspace name name
+  - name: workspaceName
+    value: 'mlw-basicex-prod-202212150056'
+  # ADO Service Connection name (set it up in the UI; it must have access to Service Principal used by Feathr)
+  - name: AzDoServiceConnectionName
+    value: 'ADOServiceConnection'
+  # Path to data for the AML stage
+  # - name: DataPath
+  #   value: 'azureml://subscriptions/a6c2a7cc-d67e-4a1a-b765-983f08c0423a/resourcegroups/rizofeathr11/workspaces/mlw-basicex-prod-202212150056/datastores/workspaceblobstore/paths/LocalUpload/6bc06dfb068a45eff911b284aa1dd064/data.csv'
+
   # Project root folder. Point to the folder containing manage.py file.
   # projectRoot: $(System.DefaultWorkingDirectory)
-  # Python version: 3.9.12
-  pythonVersion: '3.9.12'
-  resourceGroup: 'rizofeathr11'
-  workspaceName: 'mlw-basicex-prod-202212150056'
-  AzDoServiceConnectionName: 'ADOServiceConnection'
-  DataPath: 'azureml://subscriptions/a6c2a7cc-d67e-4a1a-b765-983f08c0423a/resourcegroups/rizofeathr11/workspaces/mlw-basicex-prod-202212150056/datastores/workspaceblobstore/paths/LocalUpload/6bc06dfb068a45eff911b284aa1dd064/data.csv'
-  variableGroup: 'env-variables'
 
 stages:
 
@@ -32,8 +43,6 @@ stages:
   - job: CreateEnvironment
     pool:
       vmImage: $(vmImageName)
-    variables:
-      - group: $(variableGroup)
     steps:
       # - task: UsePythonVersion@0
       #   inputs:
