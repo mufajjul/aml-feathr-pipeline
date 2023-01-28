@@ -48,7 +48,7 @@ stages:
       #   inputs:
       #     versionSpec: '$(pythonVersion)'
       #   displayName: 'Use Python $(pythonVersion)'
-      
+
       - script: conda env create -n $(environmentName) --file $(environmentPath)
         displayName: Create Anaconda environment
 
@@ -65,6 +65,7 @@ stages:
 
       - script: |
           # pip install -r $(requirementsPath) --use-deprecated=legacy-resolver
+          conda activate $(environmentName)
           python pipeline/main.py --resource_prefix $(RESOURCE_PREFIX) --resource_group $(RESOURCE_GROUP) --azure_subscription_id $(AZURE_SUBSCRIPTION_ID) --azure_client_id $(AZURE_CLIENT_ID) --azure_tenant_id $(AZURE_TENANT_ID) --azure_client_secret $(AZURE_CLIENT_SECRET) --adls_key $(ADLS_KEY)
         displayName: Run Feathr
       
@@ -94,40 +95,40 @@ stages:
   #       python pipeline/main.py
   #     workingDirectory: $(projectRoot)
 
-- stage: AML
-  displayName: 'AML'
-  dependsOn: Feathr
-  condition: succeeded()
-  jobs:
-  - job: AMLJob
-    pool:
-      vmImage: $(vmImageName)
-    steps:
-      # - task: UsePythonVersion@0
-      #   inputs:
-      #     versionSpec: '$(pythonVersion)'
-      #   displayName: 'Use Python $(pythonVersion)'
-      - script: |
-          echo "Hi"
-          conda init bash
-          echo "Good"
-          conda activate $(environmentName)
-        displayName: Activate Anaconda environment
+# - stage: AML
+#   displayName: 'AML'
+#   dependsOn: Feathr
+#   condition: succeeded()
+#   jobs:
+#   - job: AMLJob
+#     pool:
+#       vmImage: $(vmImageName)
+#     steps:
+#       # - task: UsePythonVersion@0
+#       #   inputs:
+#       #     versionSpec: '$(pythonVersion)'
+#       #   displayName: 'Use Python $(pythonVersion)'
+#       - script: |
+#           echo "Hi"
+#           conda init bash
+#           echo "Good"
+#           conda activate $(environmentName)
+#         displayName: Activate Anaconda environment
 
-      # Ask Mufy about team access level SP.
-      - task: AzureCLI@2
-        displayName: 'Azure CLI'
-        inputs:
-          azureSubscription: '$(AzDoServiceConnectionName)'
-          # scriptType: ps
-          scriptType: pscore
-          scriptLocation: inlineScript
-          inlineScript: |
-            #To install the Machine Learning CLI extension
-            az extension remove -n azure-cli-ml
-            az extension remove -n ml
-            echo "Uninstalled old AzureML CLI."
-            az extension add -n ml
-            echo "Installed new AzureML CLI."
-            az ml job create --file pipeline/aml_job.yml --resource-group $(resourceGroup) --workspace-name $(workspaceName)
+#       # Ask Mufy about team access level SP.
+#       - task: AzureCLI@2
+#         displayName: 'Azure CLI'
+#         inputs:
+#           azureSubscription: '$(AzDoServiceConnectionName)'
+#           # scriptType: ps
+#           scriptType: pscore
+#           scriptLocation: inlineScript
+#           inlineScript: |
+#             #To install the Machine Learning CLI extension
+#             az extension remove -n azure-cli-ml
+#             az extension remove -n ml
+#             echo "Uninstalled old AzureML CLI."
+#             az extension add -n ml
+#             echo "Installed new AzureML CLI."
+#             az ml job create --file pipeline/aml_job.yml --resource-group $(resourceGroup) --workspace-name $(workspaceName)
           
