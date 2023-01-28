@@ -59,6 +59,7 @@ stages:
   #     conda activate $(environmentName)
   # 
       - script: |
+          conda init powershell
           conda activate feathr-env
           echo Good!
           # pip install -r $(requirementsPath) --use-deprecated=legacy-resolver

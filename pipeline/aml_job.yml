@@ -2,14 +2,16 @@ $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
 code: src
 command: >-
   python train.py 
-  --data_path ${{inputs.data_path}}
-  --registered_model_name ${{inputs.registered_model_name}}
+  --data_path $(DATA_PATH)
+  --registered_model_name "Demo-model"
 inputs:
   data_path: 
     type: uri_file
   registered_model_name: 
     type: string
 # environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
+# Can pass conda.yml file
+# Need image name, can also tell to install additional packages through .yml file
 environment: 'feathr-env'
 compute: azureml:cpu-cluster
 display_name: aml-demo-example
