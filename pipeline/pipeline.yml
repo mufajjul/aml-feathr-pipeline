@@ -51,7 +51,10 @@ stages:
       - script: |
           conda init powershell
           echo "Initiated the shell"
+          echo $(conda info | grep -i 'base environment')
           bash
+          echo "Started bash"
+          echo $(conda info | grep -i 'base environment')
           conda env list
           conda activate feathr-env
           echo "Activated"
@@ -99,7 +102,6 @@ stages:
       - script: |
           echo "Hi"
           conda init bash
-          echo conda info | grep -i 'base environment'
           echo "Good"
           conda activate $(environmentName)
         displayName: Activate Anaconda environment
