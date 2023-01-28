@@ -50,6 +50,8 @@ stages:
       #   displayName: 'Use Python $(pythonVersion)'
       - script: |
           conda init powershell
+          echo "Initiated the shell"
+          bash
           conda activate feathr-env
           conda env create -n $(environmentName) --file $(environmentPath)
         displayName: Create Anaconda environment
