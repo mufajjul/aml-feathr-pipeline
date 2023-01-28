@@ -48,7 +48,10 @@ stages:
       #   inputs:
       #     versionSpec: '$(pythonVersion)'
       #   displayName: 'Use Python $(pythonVersion)'
-      - script: conda env create -n $(environmentName) --file $(environmentPath)
+      - script: |
+          conda init powershell
+          conda activate feathr-env
+          conda env create -n $(environmentName) --file $(environmentPath)
         displayName: Create Anaconda environment
   #     python create_environment.py
   # - script: |
