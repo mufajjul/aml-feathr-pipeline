@@ -52,9 +52,9 @@ stages:
           conda init powershell
           echo "Initiated the shell"
           bash
+          conda env list
           conda activate feathr-env
           echo "Activated"
-          echo $(conda env list)
           conda env create -n $(environmentName) --file $(environmentPath)
         displayName: Create Anaconda environment
   #     python create_environment.py
