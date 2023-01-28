@@ -48,33 +48,41 @@ stages:
       #   inputs:
       #     versionSpec: '$(pythonVersion)'
       #   displayName: 'Use Python $(pythonVersion)'
-      - script: |
-          conda init powershell
-          echo "Initiated the shell"
-          echo $(conda info | grep -i 'base environment')
-          bash
-          echo "Started bash"
-          echo $(conda info | grep -i 'base environment')
-          conda env list
-          conda activate feathr-env
-          echo "Activated"
-          conda env create -n $(environmentName) --file $(environmentPath)
+      
+      - script: conda env create -n $(environmentName) --file $(environmentPath)
         displayName: Create Anaconda environment
-  #     python create_environment.py
-  # - script: |
-  #     echo "HELLO!"
-  #     ls -al
-  #     conda init bash
-  #     conda env create --file $(environmentPath)
-  #     conda activate $(environmentName)
-  # 
+
+      - script: conda env list
+        displayName:  Verify the environment has been installed
+
+      - task: Bash@3
+        inputs:
+          targetType: 'inline'
+          script: |
+            eval "$(conda shell.bash hook)"
+            conda activate $(environmentName)
+        displayName: Activate the Environment
+
       - script: |
-          conda init powershell
-          conda activate feathr-env
-          echo Good!
           # pip install -r $(requirementsPath) --use-deprecated=legacy-resolver
-          # $(dataPath) = python pipeline/main.py --resource_prefix $(RESOURCE_PREFIX) --resource_group $(RESOURCE_GROUP) --azure_subscription_id $(AZURE_SUBSCRIPTION_ID) --azure_client_id $(AZURE_CLIENT_ID) --azure_tenant_id $(AZURE_TENANT_ID) --azure_client_secret $(AZURE_CLIENT_SECRET) --adls_key $(ADLS_KEY)
+          python pipeline/main.py --resource_prefix $(RESOURCE_PREFIX) --resource_group $(RESOURCE_GROUP) --azure_subscription_id $(AZURE_SUBSCRIPTION_ID) --azure_client_id $(AZURE_CLIENT_ID) --azure_tenant_id $(AZURE_TENANT_ID) --azure_client_secret $(AZURE_CLIENT_SECRET) --adls_key $(ADLS_KEY)
         displayName: Run Feathr
+      
+      - task: AzureCLI@2
+        displayName: 'Azure CLI'
+        inputs:
+          azureSubscription: '$(AzDoServiceConnectionName)'
+          # scriptType: ps
+          scriptType: pscore
+          scriptLocation: inlineScript
+          inlineScript: |
+            #To install the Machine Learning CLI extension
+            az extension remove -n azure-cli-ml
+            az extension remove -n ml
+            echo "Uninstalled old AzureML CLI."
+            az extension add -n ml
+            echo "Installed new AzureML CLI."
+            az ml job create --file pipeline/aml_job.yml --resource-group $(resourceGroup) --workspace-name $(workspaceName)
         # workingDirectory: $(projectRoot)
   
   # - job: RunFeathr
