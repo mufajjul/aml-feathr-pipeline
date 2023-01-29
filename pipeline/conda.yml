@@ -9,7 +9,7 @@ dependencies:
         - numpy==1.22.0
         - pandavro 
         # - git+https://github.com/feathr-ai/feathr.git#subdirectory=feathr_project&egg=feathr[notebook] 
-        - feathr --general-option="--use-deprecated=legacy-solver"
+        - feathr --install-option="--no-deps"
         - scikit-learn 
         - azure-core
         - ipykernel
