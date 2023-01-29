@@ -509,3 +509,9 @@ materialized_feature_values
 
 
 print("Successfully registered features!")
+
+# Write to a file. Or write to a keyvault (probably too much). Or to environment variable (might not work with Github Workflow).
+# TODO: Look up how to pass variables to another yaml file.
+
+
+# 
