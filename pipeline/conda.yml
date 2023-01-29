@@ -19,4 +19,4 @@ dependencies:
         - azure-ai-ml
         - mlflow
         - mltable
-        - -- use-deprecated=legacy-resolver
+        - --use-deprecated=legacy-resolver
