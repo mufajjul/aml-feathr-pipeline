@@ -52,7 +52,7 @@ stages:
       #     versionSpec: '$(pythonVersion)'
       #   displayName: 'Use Python $(pythonVersion)'
 
-      - script: conda env create -n $(environmentName) --file $(environmentPath) --use-deprecated==
+      - script: conda env create -n $(environmentName) --file $(environmentPath)
         displayName: Create Anaconda environment
 
       - script: conda env list
@@ -66,7 +66,7 @@ stages:
             conda activate $(environmentName)
         displayName: Activate the Environment
 
-      - script: pip install -r $(requirementsPath)
+      - script: pip install -r $(requirementsPath) --use-deprecated=legacy-resolver
         displayName: Install requirements
 
       - script: |
