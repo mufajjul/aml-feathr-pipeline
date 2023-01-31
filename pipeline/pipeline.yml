@@ -30,6 +30,9 @@ variables:
   # ADO Service Connection name (set it up in the UI; it must have access to Service Principal used by Feathr)
   - name: AzDoServiceConnectionName
     value: 'ADOServiceConnection'
+  # Path for the AML config file to be created at
+  - name: amlConfigPath
+    value: './aml_config.json'
   # Path to data for the AML stage
   # - name: DataPath
   #   value: ''
