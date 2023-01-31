@@ -25,8 +25,8 @@ variables:
   - name: resourceGroup
     value: 'rizofeathr11'
   # AML workspace name name
-  - name: workspaceName
-    value: 'mlw-basicex-prod-202212150056'
+  # - name: workspaceName
+  #   value: 'mlw-basicex-prod-202212150056'
   # ADO Service Connection name (set it up in the UI; it must have access to Service Principal used by Feathr)
   - name: AzDoServiceConnectionName
     value: 'ADOServiceConnection'
@@ -108,7 +108,7 @@ stages:
             echo "Uninstalled old AzureML CLI."
             az extension add -n ml
             echo "Installed new AzureML CLI."
-            az ml job create --file pipeline/aml_job.yml --resource-group $(resourceGroup) --workspace-name $(workspaceName)
+            az ml job create --file pipeline/aml_job.yml --resource-group $(resourceGroup) --workspace-name $(AML_WORKSPACE_NAME)
         # workingDirectory: $(projectRoot)
   
   # - job: RunFeathr
