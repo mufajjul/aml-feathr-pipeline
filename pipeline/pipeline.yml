@@ -79,6 +79,9 @@ stages:
             echo Test1
             echo $COLOR
             echo $AZURE_DATA_URL
+            echo $DATA
+            echo $SATA_DATA
+            echo $AZURE
         displayName: Run Feathr
         condition: succeeded()
 
