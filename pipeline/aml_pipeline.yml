@@ -27,6 +27,7 @@ settings:
   continue_on_step_failure: false
 
 jobs:
+
   # prep_data:
   #   name: prep_data
   #   display_name: prep-data
@@ -48,33 +49,29 @@ jobs:
   #     train_data: ${{parent.outputs.train_data}}
   #     val_data: ${{parent.outputs.val_data}}
   #     test_data: ${{parent.outputs.test_data}}
+  
+  install_dependencies:
+    name: install_dependencies
+    display_name: install-dependencies
+    # code: ../../../data-science/src
+    code: src
+    command: >-
+      pip install azure-ai-ml
+    environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
 
-  tasks:
-
-    install_dependencies:
-      name: install_dependencies
-      display_name: install-dependencies
-      # code: ../../../data-science/src
-      code: src
-      command: >-
-        pip install azure-ai-ml
-      environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
-      outputs:
-        model_output: ${{parent.outputs.trained_model}}
-
-    train_model:
-      name: train_model
-      display_name: train-model
-      # code: ../../../data-science/src
-      code: src
-      command: >-
-        python train.py
-        # --data_path $(DataPath)
-        --data_path https://rizodeploy11dls.blob.core.windows.net/rizodeploy11fs/feathr_demo_data/data.csv
-        --registered_model_name feathr-aml-demo
-      environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
-      outputs:
-        model_output: ${{parent.outputs.trained_model}}
+  train_model:
+    name: train_model
+    display_name: train-model
+    # code: ../../../data-science/src
+    code: src
+    command: >-
+      python train.py
+      # --data_path $(DataPath)
+      --data_path https://rizodeploy11dls.blob.core.windows.net/rizodeploy11fs/feathr_demo_data/data.csv
+      --registered_model_name feathr-aml-demo
+    environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
+    # outputs:
+    #   model_output: ${{parent.outputs.trained_model}}
 
   # evaluate_model:
   #   name: evaluate_model
