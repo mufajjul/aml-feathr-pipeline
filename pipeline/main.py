@@ -37,6 +37,8 @@ from feathr.spark_provider.feathr_configurations import SparkExecutionConfigurat
 import nyc_taxi
 from job_utils import get_result_df
 
+from azure.storage.filedatalake import DataLakeServiceClient
+
 print(f"Feathr version: {feathr.__version__}")
 
 parser = argparse.ArgumentParser()
@@ -514,4 +516,72 @@ print("Successfully registered features!")
 # TODO: Look up how to pass variables to another yaml file.
 
 
-# 
+print("Writing new data to ADLS storage...")
+
+df_processed = (
+    df  # Dataframe that we generated from get_offline_features call.
+    .withColumn("label", F.col("fare_amount").cast("double"))
+    .where(F.col("f_trip_time_duration") > 0)
+    .fillna(0)
+)
+# Convert the data to Pandas format
+df_pandas = df_processed.toPandas()
+
+# Remove columns that don't work with our regressor
+column_list = ['lpep_pickup_datetime', 'lpep_dropoff_datetime', 'store_and_fwd_flag']
+for col in column_list:
+    del df_pandas[col]
+
+df_pandas = df_pandas.fillna(0)
+
+
+# Create/retrieve the necessary clients and upload the data
+ADLS_SCHEME = 'https'
+ADLS_SYSTEM_URL = f"{ADLS_SCHEME}://{RESOURCE_PREFIX}dls.dfs.core.windows.net"
+ADLS_FILE_SYSTEM = f"{RESOURCE_PREFIX}fs"
+ADLS_DATA_DIRECTORY = "feathr_demo_data"
+ADLS_DATA_FILE = "data.csv"
+
+service_client = DataLakeServiceClient(
+    account_url=ADLS_SYSTEM_URL, credential=os.environ['ADLS_KEY'])
+
+def create_or_retrieve_file_system(service_client, file_system):
+    '''Creates a new file system on a given service client, or returns an existing one.'''
+    file_system_client = service_client.get_file_system_client(file_system)
+    if file_system_client.exists():
+        print("File system already exists:", file_system)
+    else:
+        file_system_client.create_file_system()
+        print("File system created:", file_system)
+    return file_system_client
+
+def create_or_retrieve_directory(file_system_client, directory):
+    directory_client = file_system_client.get_directory_client(directory)
+    if directory_client.exists():
+        print("Directory already exists:", directory)
+    else:
+        directory_client.create_directory()
+        print("Directory created:", directory)
+    return directory_client
+
+def create_or_retrieve_file(directory_client, file):
+    file_client = directory_client.get_file_client(file)
+    if file_client.exists():
+        print("File already exists:", file)
+    else:
+        file_client.create_file()
+    return file_client
+
+
+file_system_client = create_or_retrieve_file_system(service_client, ADLS_FILE_SYSTEM)
+directory_client = create_or_retrieve_directory(file_system_client, ADLS_DATA_DIRECTORY)
+file_client = create_or_retrieve_file(directory_client, ADLS_DATA_FILE)
+# Convert Pandas Dataframe to CSV and upload to the specified file
+output = df_pandas.to_csv (index_label="idx", encoding = "utf-8")
+file_client.upload_data(output, overwrite=True)
+
+ADLS_DATA_PATH = f"{ADLS_SYSTEM_URL}/{ADLS_FILE_SYSTEM}/{ADLS_DATA_DIRECTORY}/{ADLS_DATA_FILE}"
+print("ADLS_DATA_PATH:", ADLS_DATA_PATH)
+
+# Replace the DataPath variable in the ADO Pipeline with the newly acquired data path
+print(f"##vso[task.setvariable variable=FOO]{ADLS_DATA_PATH}")

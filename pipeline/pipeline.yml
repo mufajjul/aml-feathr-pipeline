@@ -30,8 +30,9 @@ variables:
   # ADO Service Connection name (set it up in the UI; it must have access to Service Principal used by Feathr)
   - name: AzDoServiceConnectionName
     value: 'ADOServiceConnection'
-  # Path to data for the AML stage
-  # - name: DataPath
+  Path to data for the AML stage
+  - name: DataPath
+    value: ''
   #   value: 'azureml://subscriptions/a6c2a7cc-d67e-4a1a-b765-983f08c0423a/resourcegroups/rizofeathr11/workspaces/mlw-basicex-prod-202212150056/datastores/workspaceblobstore/paths/LocalUpload/6bc06dfb068a45eff911b284aa1dd064/data.csv'
 
   # Project root folder. Point to the folder containing manage.py file.
@@ -43,7 +44,7 @@ stages:
   displayName: Feathr stage
   jobs:
 
-  - job: CreateEnvironment
+  - job: RunDemo
     pool:
       vmImage: $(vmImageName)
     steps:
@@ -76,6 +77,13 @@ stages:
             python pipeline/main.py --resource_prefix $(RESOURCE_PREFIX) --resource_group $(RESOURCE_GROUP) --azure_subscription_id $(AZURE_SUBSCRIPTION_ID) --azure_client_id $(AZURE_CLIENT_ID) --azure_tenant_id $(AZURE_TENANT_ID) --azure_client_secret $(AZURE_CLIENT_SECRET) --adls_key $(ADLS_KEY)
         displayName: Run Feathr
 
+      - task: Bash@3
+        inputs:
+          targetType: 'inline'
+          script: |
+            echo $(DataPath)
+        displayName: Print new variable
+
       # - script: |
       #     conda activate $(environmentName)
       #     pip install -r $(requirementsPath) --use-deprecated=legacy-resolver
@@ -87,7 +95,7 @@ stages:
       #   displayName: Run Feathr
       
       - task: AzureCLI@2
-        displayName: 'Azure CLI'
+        displayName: 'Run AML job'
         inputs:
           azureSubscription: '$(AzDoServiceConnectionName)'
           # scriptType: ps
