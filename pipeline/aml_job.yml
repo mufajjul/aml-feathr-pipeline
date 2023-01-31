@@ -1,6 +1,6 @@
 $schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
-experiment_name: feathr-aml-demo-training
+experiment_name: aml-demo-example
 description: Training Pipeline to train a model that predicts taxi fare price
 
 # <inputs_and_outputs>
@@ -58,7 +58,7 @@ jobs:
       python train.py
       # --data_path $(DataPath)
       --data_path https://rizodeploy11dls.blob.core.windows.net/rizodeploy11fs/feathr_demo_data/data.csv
-      --registered_model_name aml-demo-example
+      --registered_model_name feathr-aml-demo
     environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
     outputs:
       model_output: ${{parent.outputs.trained_model}}
