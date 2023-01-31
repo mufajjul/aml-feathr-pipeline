@@ -60,6 +60,7 @@ jobs:
       --resource_group $(RESOURCE_GROUP)
       --workspace_name $(AML_WORKSPACE_NAME)
       --config_path $(amlConfigPath)
+    environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
 
   train_model:
     name: train_model
