@@ -30,7 +30,7 @@ variables:
   # ADO Service Connection name (set it up in the UI; it must have access to Service Principal used by Feathr)
   - name: AzDoServiceConnectionName
     value: 'ADOServiceConnection'
-  Path to data for the AML stage
+  # Path to data for the AML stage
   - name: DataPath
     value: ''
   #   value: 'azureml://subscriptions/a6c2a7cc-d67e-4a1a-b765-983f08c0423a/resourcegroups/rizofeathr11/workspaces/mlw-basicex-prod-202212150056/datastores/workspaceblobstore/paths/LocalUpload/6bc06dfb068a45eff911b284aa1dd064/data.csv'
