@@ -58,6 +58,7 @@ stages:
 
       - script: conda env list
         displayName:  Verify the environment has been installed
+        condition: succeeded()
 
       # - task: Bash@3
       #   inputs:
@@ -79,6 +80,7 @@ stages:
             echo $COLOR
             echo $AZURE_DATA_URL
         displayName: Run Feathr
+        condition: succeeded()
 
       - task: Bash@3
         inputs:
@@ -87,6 +89,7 @@ stages:
             echo Test
             echo $COLOR
         displayName: Print new variable
+        condition: succeeded()
 
       # - script: |
       #     conda activate $(environmentName)
@@ -113,6 +116,7 @@ stages:
             az extension add -n ml
             echo "Installed new AzureML CLI."
             az ml job create --file pipeline/aml_job.yml --resource-group $(resourceGroup) --workspace-name $(AML_WORKSPACE_NAME)
+          condition: succeeded()
         # workingDirectory: $(projectRoot)
   
   # - job: RunFeathr
