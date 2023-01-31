@@ -53,53 +53,33 @@ stages:
       #     versionSpec: '$(pythonVersion)'
       #   displayName: 'Use Python $(pythonVersion)'
 
-      # - script: conda env create -n $(environmentName) --file $(environmentPath)
-      #   displayName: Create Anaconda environment
+      - script: conda env create -n $(environmentName) --file $(environmentPath)
+        displayName: Create Anaconda environment
 
       - script: conda env list
         displayName:  Verify the environment has been installed
         condition: succeeded()
-
-      # - task: Bash@3
-      #   inputs:
-      #     targetType: 'inline'
-      #     script: |
-      #       eval "$(conda shell.bash hook)"
-      #       conda activate $(environmentName)
-      #       pip install -r $(requirementsPath) --use-deprecated=legacy-resolver
-      #   displayName: Install requirements
 
       - task: Bash@3
         inputs:
           targetType: 'inline'
           script: |
             eval "$(conda shell.bash hook)"
-            # conda activate $(environmentName)
-            python pipeline/main.py --resource_prefix $(RESOURCE_PREFIX) --resource_group $(RESOURCE_GROUP) --azure_subscription_id $(AZURE_SUBSCRIPTION_ID) --azure_client_id $(AZURE_CLIENT_ID) --azure_tenant_id $(AZURE_TENANT_ID) --azure_client_secret $(AZURE_CLIENT_SECRET) --adls_key $(ADLS_KEY)
-        displayName: Run Feathr
-        condition: succeeded()
+            echo $(python -V)
+            conda activate $(environmentName)
+            pip install -r $(requirementsPath) --use-deprecated=legacy-resolver
+        displayName: Install requirements
 
       - task: Bash@3
         inputs:
           targetType: 'inline'
           script: |
-            echo Test
-            echo $AZURE_DATA_URL
-            echo $DATA
-            echo $SATA_DATA
-            echo $AZURE
-        displayName: Print new variable
+            eval "$(conda shell.bash hook)"
+            conda activate $(environmentName)
+            python pipeline/main.py --resource_prefix $(RESOURCE_PREFIX) --resource_group $(RESOURCE_GROUP) --azure_subscription_id $(AZURE_SUBSCRIPTION_ID) --azure_client_id $(AZURE_CLIENT_ID) --azure_tenant_id $(AZURE_TENANT_ID) --azure_client_secret $(AZURE_CLIENT_SECRET) --adls_key $(ADLS_KEY)
+            echo "ADLS_DATA_URL: $(ADLS_DATA_URL)"
+        displayName: Run Feathr
         condition: succeeded()
-
-      # - script: |
-      #     conda activate $(environmentName)
-      #     pip install -r $(requirementsPath) --use-deprecated=legacy-resolver
-      #   displayName: Install requirements
-
-      # - script: |
-      #     conda activate $(environmentName)
-      #     python pipeline/main.py --resource_prefix $(RESOURCE_PREFIX) --resource_group $(RESOURCE_GROUP) --azure_subscription_id $(AZURE_SUBSCRIPTION_ID) --azure_client_id $(AZURE_CLIENT_ID) --azure_tenant_id $(AZURE_TENANT_ID) --azure_client_secret $(AZURE_CLIENT_SECRET) --adls_key $(ADLS_KEY)
-      #   displayName: Run Feathr
       
       - task: AzureCLI@2
         displayName: 'Run AML job'
