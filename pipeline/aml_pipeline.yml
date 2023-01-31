@@ -3,6 +3,8 @@ type: pipeline
 experiment_name: aml-demo-example
 description: Training Pipeline to train a model that predicts taxi fare price
 
+variables:
+  - group: env-variables
 # <inputs_and_outputs>
 # inputs:
 #   input:
