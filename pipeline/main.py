@@ -1,5 +1,4 @@
-AZURE_DATA_URL = "ASD"
-print(f'##vso[task.setvariable variable=COLOR;]RED')
+print(f'##vso[task.setvariable variable=AZURE_DATA_URL;]RED')
 
 # import argparse
 # import os
