@@ -1,4 +1,5 @@
 AZURE_DATA_URL = "ASD"
+print(f'##vso[task.setvariable variable=COLOR;]RED')
 
 # import argparse
 # import os
