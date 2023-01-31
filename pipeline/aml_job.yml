@@ -1,6 +1,7 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
 code: src
 command: >-
+  eval "$(conda shell.bash hook)"
   conda activate feathr-env
   echo "DataPath: $(DataPath)"
   python train.py --data_path $(DataPath) --registered_model_name "Demo-model"
