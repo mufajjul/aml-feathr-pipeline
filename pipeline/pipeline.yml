@@ -76,12 +76,6 @@ stages:
             eval "$(conda shell.bash hook)"
             # conda activate $(environmentName)
             python pipeline/main.py --resource_prefix $(RESOURCE_PREFIX) --resource_group $(RESOURCE_GROUP) --azure_subscription_id $(AZURE_SUBSCRIPTION_ID) --azure_client_id $(AZURE_CLIENT_ID) --azure_tenant_id $(AZURE_TENANT_ID) --azure_client_secret $(AZURE_CLIENT_SECRET) --adls_key $(ADLS_KEY)
-            echo Test1
-            echo $COLOR
-            echo $AZURE_DATA_URL
-            echo $DATA
-            echo $SATA_DATA
-            echo $AZURE
         displayName: Run Feathr
         condition: succeeded()
 
@@ -90,7 +84,6 @@ stages:
           targetType: 'inline'
           script: |
             echo Test
-            echo $COLOR
             echo $AZURE_DATA_URL
             echo $DATA
             echo $SATA_DATA
