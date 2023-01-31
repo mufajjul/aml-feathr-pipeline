@@ -2,7 +2,7 @@ $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
 code: src
 command: >-
   conda activate feathr-env
-  python train.py --data_path $(DATA_PATH) --registered_model_name "Demo-model"
+  python train.py --data_path $(DataPath) --registered_model_name "Demo-model"
 environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
 compute: azureml:cpu-cluster
 # inputs:
