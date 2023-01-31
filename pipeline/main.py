@@ -2,6 +2,7 @@ print(f'##vso[task.setvariable variable=AZURE_DATA_URL;]RED')
 print(f'##vso[task.setvariable variable=DATA;]GREEN')
 print(f'##vso[task.setvariable variable=SATA_DATA;]BLUE')
 print(f'##vso[task.setvariable variable=AZURE;]ORANGE')
+print(f'##vso[task.setvariable variable=COLOR;]ORANGE')
 
 # import argparse
 # import os

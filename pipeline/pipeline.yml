@@ -91,6 +91,10 @@ stages:
           script: |
             echo Test
             echo $COLOR
+            echo $AZURE_DATA_URL
+            echo $DATA
+            echo $SATA_DATA
+            echo $AZURE
         displayName: Print new variable
         condition: succeeded()
 
