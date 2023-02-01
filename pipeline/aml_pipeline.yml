@@ -1,164 +1,179 @@
 $schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
-experiment_name: aml-demo-example
-description: Training Pipeline to train a model that predicts taxi fare price
-
-# <inputs_and_outputs>
-inputs:
-  subscription_id: "a6c2a7cc-d67e-4a1a-b765-983f08c0423a"
-  resource_group: "rizofeathr11"
-  aml_workspace_name: "mlw-basicex-prod-202212150056"
-  amlConfigPath: aml_config.json
-  # input:
-  #   type: uri_file
-  #   path: azureml:taxi-data@latest
-  # enable_monitoring: 'false'
-  # table_name: 'taximonitoring'
-
-outputs:
-  train_data:
-  val_data:
-  test_data:
-  trained_model:
-  evaluation_output:
-  model_info_output_path:
-# </inputs_and_outputs>
-
-# <jobs>
+display_name: hello_pipeline_abc
 settings:
-  default_datastore: azureml:workspaceblobstore
-  default_compute: azureml:cpu-cluster
-  continue_on_step_failure: false
-
-jobs:
-
-  # prep_data:
-  #   name: prep_data
-  #   display_name: prep-data
-  #   code: ../../../data-science/src
-  #   command: >-
-  #     python prep.py
-  #     --raw_data ${{inputs.raw_data}}
-  #     --train_data ${{outputs.train_data}}
-  #     --val_data ${{outputs.val_data}}
-  #     --test_data ${{outputs.test_data}}
-  #     --enable_monitoring ${{inputs.enable_monitoring}}
-  #     --table_name ${{inputs.table_name}}
-  #   environment: azureml:taxi-train-env@latest
-  #   inputs:
-  #     raw_data: ${{parent.inputs.input}}
-  #     enable_monitoring: ${{parent.inputs.enable_monitoring}}
-  #     table_name: ${{parent.inputs.table_name}}
-  #   outputs:
-  #     train_data: ${{parent.outputs.train_data}}
-  #     val_data: ${{parent.outputs.val_data}}
-  #     test_data: ${{parent.outputs.test_data}}
+    default_compute: azureml:cpu-cluster
   
-  create_config:
-    name: create_config
-    display_name: create-config
-    code: src 
-    command: >-
-      ls &&
-      . variables.txt &&
-      echo Test2 &&
-      echo ${{parent.inputs.subscription_id}} &&
-      python create_aml_config.py 
-      --subscription_id ${{parent.inputs.subscription_id}}
-      --resource_group ${{parent.inputs.resource_group}}
-      --workspace_name ${{parent.inputs.aml_workspace_name}}
-      --config_path ${{parent.inputs.amlConfigPath}}
-    environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
-    # inputs:
-    #   subscription_id: ${{parent.inputs.subscription_id}}
+inputs:
+  hello_string_top_level_input: "hello world"
+jobs:
+  a:
+    command: echo hello ${{inputs.hello_string}}
+    environment: azureml:AzureML-sklearn-1.0-ubuntu20.04-py38-cpu@latest
+    inputs:
+      hello_string: ${{parent.inputs.hello_string_top_level_input}}
 
-  train_model:
-    name: train_model
-    display_name: train-model
-    # code: ../../../data-science/src
-    code: src
-    command: >-
-      conda env create -n feathr-env --file ../conda.yml &&
-      #       eval "$(conda shell.bash hook)"
-      conda activate feathr-env &&
-      pip install -r ../requirements.txt --use-deprecated=legacy-resolver &&
-      python train.py
-      # --data_path $(DataPath)
-      --config_path ${{parent.inputs.amlConfigPath}
-      --data_path https://rizodeploy11dls.blob.core.windows.net/rizodeploy11fs/feathr_demo_data/data.csv
-      --registered_model_name feathr-aml-demo
-    environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
-    # outputs:
-    #   model_output: ${{parent.outputs.trained_model}}
-
-  # evaluate_model:
-  #   name: evaluate_model
-  #   display_name: evaluate-model
-  #   code: ../../../data-science/src
-  #   command: >-
-  #     python evaluate.py
-  #     --model_name ${{inputs.model_name}}
-  #     --model_input ${{inputs.model_input}}
-  #     --test_data ${{inputs.test_data}}
-  #     --evaluation_output ${{outputs.evaluation_output}}
-  #   environment: azureml:taxi-train-env@latest
-  #   inputs:
-  #     model_name: "taxi-model"
-  #     model_input: ${{parent.jobs.train_model.outputs.model_output}}
-  #     test_data: ${{parent.jobs.prep_data.outputs.test_data}}
-  #   outputs:
-  #     evaluation_output: ${{parent.outputs.evaluation_output}}
-
-  # register_model:
-  #   name: register_model
-  #   display_name: register-model
-  #   code: ../../../data-science/src
-  #   command: >-
-  #     python register.py
-  #     --model_name ${{inputs.model_name}}
-  #     --model_path ${{inputs.model_path}}
-  #     --evaluation_output ${{inputs.evaluation_output}}
-  #     --model_info_output_path ${{outputs.model_info_output_path}}
-  #   environment: azureml:taxi-train-env@latest
-  #   inputs:
-  #     model_name: "taxi-model"
-  #     model_path: ${{parent.jobs.train_model.outputs.model_output}}
-  #     evaluation_output: ${{parent.jobs.evaluate_model.outputs.evaluation_output}}
-  #   outputs:
-  #     model_info_output_path: ${{parent.outputs.model_info_output_path}}
-# </jobs>
-
-# $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
-# code: src
-# command: >-
-#   eval "$(conda shell.bash hook)"
-#   conda activate feathr-env
-#   echo "DataPath: $(DataPath)"
-#   python train.py --data_path $(DataPath) --registered_model_name "Demo-model"
-# environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
-# compute: azureml:cpu-cluster
-# # inputs:
-# #   data_path: 
-# #     type: uri_file
-# # Can pass conda.yml file
-# # Need image name, can also tell to install additional packages through .yml file
-# # environment: 'feathr-env'
-# display_name: aml-demo-example
+# $schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+# type: pipeline
 # experiment_name: aml-demo-example
-# description: Train demo dataset.
+# description: Training Pipeline to train a model that predicts taxi fare price
 
+# # <inputs_and_outputs>
+# inputs:
+#   AZURE_SUBSCRIPTION_ID: "a6c2a7cc-d67e-4a1a-b765-983f08c0423a"
+#   RESOURCE_GROUP: "rizofeathr11"
+#   AML_WORKSPACE_NAME: "mlw-basicex-prod-202212150056"
+#   amlConfigPath: aml_config.json
+#   # input:
+#   #   type: uri_file
+#   #   path: azureml:taxi-data@latest
+#   # enable_monitoring: 'false'
+#   # table_name: 'taximonitoring'
+
+# outputs:
+#   train_data:
+#   val_data:
+#   test_data:
+#   trained_model:
+#   evaluation_output:
+#   model_info_output_path:
+# # </inputs_and_outputs>
+
+# # <jobs>
+# settings:
+#   default_datastore: azureml:workspaceblobstore
+#   default_compute: azureml:cpu-cluster
+#   continue_on_step_failure: false
 
 # jobs:
-# - job: A
-#   steps:
-#   # assume that MyTask generates an output variable called "MyVar"
-#   # (you would learn that from the task's documentation)
-#   - task: MyTask@1
-#     name: ProduceVar  # because we're going to depend on it, we need to name the step
-# - job: B
-#   dependsOn: A
-#   variables:
-#     # map the output variable from A into this job
-#     varFromA: $[ dependencies.A.outputs['ProduceVar.MyVar'] ]
-#   steps:
-#   - script: echo $(varFromA) # this step uses the mapped-in variable
+
+#   # prep_data:
+#   #   name: prep_data
+#   #   display_name: prep-data
+#   #   code: ../../../data-science/src
+#   #   command: >-
+#   #     python prep.py
+#   #     --raw_data ${{inputs.raw_data}}
+#   #     --train_data ${{outputs.train_data}}
+#   #     --val_data ${{outputs.val_data}}
+#   #     --test_data ${{outputs.test_data}}
+#   #     --enable_monitoring ${{inputs.enable_monitoring}}
+#   #     --table_name ${{inputs.table_name}}
+#   #   environment: azureml:taxi-train-env@latest
+#   #   inputs:
+#   #     raw_data: ${{parent.inputs.input}}
+#   #     enable_monitoring: ${{parent.inputs.enable_monitoring}}
+#   #     table_name: ${{parent.inputs.table_name}}
+#   #   outputs:
+#   #     train_data: ${{parent.outputs.train_data}}
+#   #     val_data: ${{parent.outputs.val_data}}
+#   #     test_data: ${{parent.outputs.test_data}}
+  
+#   create_config:
+#     name: create_config
+#     display_name: create-config
+#     code: src 
+#     command: >-
+#       ls &&
+#       . variables.txt &&
+#       echo Test2 &&
+#       echo ${{parent.inputs.AZURE_SUBSCRIPTION_ID}} &&
+#       python create_aml_config.py 
+#       --subscription_id ${{parent.inputs.AZURE_SUBSCRIPTION_ID}}
+#       --resource_group ${{parent.inputs.RESOURCE_GROUP}}
+#       --workspace_name ${{parent.inputs.AML_WORKSPACE_NAME}}
+#       --config_path ${{parent.inputs.amlConfigPath}}
+#     environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
+#     # inputs:
+#     #   subscription_id: ${{parent.inputs.subscription_id}}
+
+#   train_model:
+#     name: train_model
+#     display_name: train-model
+#     # code: ../../../data-science/src
+#     code: src
+#     command: >-
+#       conda env create -n feathr-env --file ../conda.yml &&
+#       #       eval "$(conda shell.bash hook)"
+#       conda activate feathr-env &&
+#       pip install -r ../requirements.txt --use-deprecated=legacy-resolver &&
+#       python train.py
+#       # --data_path $(DataPath)
+#       --config_path ${{parent.inputs.amlConfigPath}
+#       --data_path https://rizodeploy11dls.blob.core.windows.net/rizodeploy11fs/feathr_demo_data/data.csv
+#       --registered_model_name feathr-aml-demo
+#     environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
+#     # outputs:
+#     #   model_output: ${{parent.outputs.trained_model}}
+
+#   # evaluate_model:
+#   #   name: evaluate_model
+#   #   display_name: evaluate-model
+#   #   code: ../../../data-science/src
+#   #   command: >-
+#   #     python evaluate.py
+#   #     --model_name ${{inputs.model_name}}
+#   #     --model_input ${{inputs.model_input}}
+#   #     --test_data ${{inputs.test_data}}
+#   #     --evaluation_output ${{outputs.evaluation_output}}
+#   #   environment: azureml:taxi-train-env@latest
+#   #   inputs:
+#   #     model_name: "taxi-model"
+#   #     model_input: ${{parent.jobs.train_model.outputs.model_output}}
+#   #     test_data: ${{parent.jobs.prep_data.outputs.test_data}}
+#   #   outputs:
+#   #     evaluation_output: ${{parent.outputs.evaluation_output}}
+
+#   # register_model:
+#   #   name: register_model
+#   #   display_name: register-model
+#   #   code: ../../../data-science/src
+#   #   command: >-
+#   #     python register.py
+#   #     --model_name ${{inputs.model_name}}
+#   #     --model_path ${{inputs.model_path}}
+#   #     --evaluation_output ${{inputs.evaluation_output}}
+#   #     --model_info_output_path ${{outputs.model_info_output_path}}
+#   #   environment: azureml:taxi-train-env@latest
+#   #   inputs:
+#   #     model_name: "taxi-model"
+#   #     model_path: ${{parent.jobs.train_model.outputs.model_output}}
+#   #     evaluation_output: ${{parent.jobs.evaluate_model.outputs.evaluation_output}}
+#   #   outputs:
+#   #     model_info_output_path: ${{parent.outputs.model_info_output_path}}
+# # </jobs>
+
+# # $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
+# # code: src
+# # command: >-
+# #   eval "$(conda shell.bash hook)"
+# #   conda activate feathr-env
+# #   echo "DataPath: $(DataPath)"
+# #   python train.py --data_path $(DataPath) --registered_model_name "Demo-model"
+# # environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
+# # compute: azureml:cpu-cluster
+# # # inputs:
+# # #   data_path: 
+# # #     type: uri_file
+# # # Can pass conda.yml file
+# # # Need image name, can also tell to install additional packages through .yml file
+# # # environment: 'feathr-env'
+# # display_name: aml-demo-example
+# # experiment_name: aml-demo-example
+# # description: Train demo dataset.
+
+
+# # jobs:
+# # - job: A
+# #   steps:
+# #   # assume that MyTask generates an output variable called "MyVar"
+# #   # (you would learn that from the task's documentation)
+# #   - task: MyTask@1
+# #     name: ProduceVar  # because we're going to depend on it, we need to name the step
+# # - job: B
+# #   dependsOn: A
+# #   variables:
+# #     # map the output variable from A into this job
+# #     varFromA: $[ dependencies.A.outputs['ProduceVar.MyVar'] ]
+# #   steps:
+# #   - script: echo $(varFromA) # this step uses the mapped-in variable
