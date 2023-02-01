@@ -98,7 +98,7 @@ stages:
         inputs:
           targetType: 'inline'
           script: |
-            python piopeline/create_aml_config.py \
+            python pipeline/create_aml_config.py \
             --subscription_id $(AZURE_SUBSCRIPTION_ID) \
             --resource_group $(RESOURCE_GROUP) \
             --workspace_name $(AML_WORKSPACE_NAME) \
