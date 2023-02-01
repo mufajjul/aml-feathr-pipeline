@@ -88,10 +88,10 @@ stages:
         inputs:
           targetType: 'inline'
           script: |
-            echo "AZURE_SUBSCRIPTION_ID=$(AZURE_SUBSCRIPTION_ID)" > src/variables.txt
-            echo "RESOURCE_GROUP=$(RESOURCE_GROUP)" >> src/variables.txt
-            echo "AML_WORKSPACE_NAME=$(AML_WORKSPACE_NAME)" >> src/variables.txt
-            echo "amlConfigPath=$(amlConfigPath)" >> src/variables.txt
+            echo "AZURE_SUBSCRIPTION_ID=$(AZURE_SUBSCRIPTION_ID)" > pipeline/src/variables.txt
+            echo "RESOURCE_GROUP=$(RESOURCE_GROUP)" >> pipeline/src/variables.txt
+            echo "AML_WORKSPACE_NAME=$(AML_WORKSPACE_NAME)" >> pipeline/src/variables.txt
+            echo "amlConfigPath=$(amlConfigPath)" >> pipeline/src/variables.txt
             ls 
             echo "_______"
             ls pipeline/src
