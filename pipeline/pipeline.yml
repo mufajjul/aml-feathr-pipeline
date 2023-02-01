@@ -94,7 +94,7 @@ stages:
             echo "amlConfigPath=$(amlConfigPath)" >> src/variables.txt
             ls 
             echo "_______"
-            ls ./src
+            ls pipeline/src
         displayName: Pass variables to AML pipeline
       
       - task: AzureCLI@2
