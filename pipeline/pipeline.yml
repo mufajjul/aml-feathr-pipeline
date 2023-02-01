@@ -100,7 +100,7 @@ stages:
             echo "Installed new AzureML CLI."
             az ml environment list --workspace-name $(AML_WORKSPACE_NAME) --resource-group $(RESOURCE_GROUP)
             echo "Creating AML job."
-            az ml job create --file pipeline/aml_pipeline.yml --resource-group $(resourceGroup) --workspace-name $(AML_WORKSPACE_NAME)
+            az ml job create --file pipeline/aml_pipeline.yml --resource-group $(resourceGroup) --workspace-name $(AML_WORKSPACE_NAME) --set AZURE_SUBSCRIPTION_ID="asda"
           condition: succeeded()
         # workingDirectory: $(projectRoot)
   
