@@ -59,13 +59,8 @@ jobs:
     display_name: create-config
     code: src 
     command: >-
-      echo Start! &&
-      ls . &&
-      echo outside: &&
-      ls .. &&
       . variables.txt &&
-      echo Test2 &&
-      echo ${{inputs.AZURE_SUBSCRIPTION_ID}} &&
+      echo "Azure subscription ID: ${{inputs.AZURE_SUBSCRIPTION_ID}}" &&
       python create_aml_config.py 
       --subscription_id ${{inputs.AZURE_SUBSCRIPTION_ID}}
       --resource_group ${{inputs.RESOURCE_GROUP}}
@@ -84,6 +79,7 @@ jobs:
     # code: ../../../data-science/src
     code: src
     command: >-
+      conda env list &&
       echo "Creating environment" &&
       conda env create -n feathr-env --file ../conda.yml &&
       echo "Environment created. Activating..."
