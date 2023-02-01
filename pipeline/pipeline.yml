@@ -98,7 +98,7 @@ stages:
             echo "Uninstalled old AzureML CLI."
             az extension add -n ml
             echo "Installed new AzureML CLI."
-            az ml environment list --workspace-name $(AML_WORKSPACE_NAME)
+            az ml environment list --workspace-name $(AML_WORKSPACE_NAME) --resource-group $(RESOURCE_GROUP)
             echo "Creating AML job."
             az ml job create --file pipeline/aml_pipeline.yml --resource-group $(resourceGroup) --workspace-name $(AML_WORKSPACE_NAME)
           condition: succeeded()
