@@ -92,6 +92,7 @@ stages:
             echo "RESOURCE_GROUP=$(RESOURCE_GROUP)" >> variables.txt
             echo "AML_WORKSPACE_NAME=$(AML_WORKSPACE_NAME)" >> variables.txt
             echo "amlConfigPath=$(amlConfigPath)" >> variables.txt
+            ls
         displayName: Pass variables to AML pipeline
       
       - task: AzureCLI@2
@@ -102,6 +103,7 @@ stages:
           scriptType: pscore
           scriptLocation: inlineScript
           inlineScript: |
+            ls
             #To install the Machine Learning CLI extension
             az extension remove -n azure-cli-ml
             az extension remove -n ml
