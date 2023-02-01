@@ -58,9 +58,9 @@ jobs:
     command: >-
       . variables.txt &&
       echo Test2 &&
-      echo ${{AZURE_SUBSCRIPTION_ID}} &&
+      echo $(AZURE_SUBSCRIPTION_ID) &&
       python create_aml_config.py 
-      --subscription_id ${{AZURE_SUBSCRIPTION_ID}}
+      --subscription_id $(AZURE_SUBSCRIPTION_ID)
       --resource_group $(RESOURCE_GROUP)
       --workspace_name $(AML_WORKSPACE_NAME)
       --config_path $(amlConfigPath)
