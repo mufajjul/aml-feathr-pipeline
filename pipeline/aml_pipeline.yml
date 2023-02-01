@@ -76,9 +76,10 @@ jobs:
     # code: ../../../data-science/src
     code: src
     command: >-
+      cat variables.txt &&
       ls &&
       source variables.txt &&
-      echo $(AZURE_SUBSCRIPTION_ID) &&
+      echo $AZURE_SUBSCRIPTION_ID &&
       echo "!@#" &&
       conda env create -n feathr-env --file environment/conda.yml &&
       eval "$(conda shell.bash hook)" &&  
