@@ -54,25 +54,25 @@ jobs:
   #     val_data: ${{parent.outputs.val_data}}
   #     test_data: ${{parent.outputs.test_data}}
   
-  create_config:
-    name: create_config
-    display_name: create-config
-    code: src 
-    command: >-
-      . variables.txt &&
-      echo "Azure subscription ID: ${{inputs.AZURE_SUBSCRIPTION_ID}}" &&
-      python create_aml_config.py 
-      --subscription_id ${{inputs.AZURE_SUBSCRIPTION_ID}}
-      --resource_group ${{inputs.RESOURCE_GROUP}}
-      --workspace_name ${{inputs.AML_WORKSPACE_NAME}}
-      --config_path ${{inputs.amlConfigPath}} &&
-      ls
-    environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
-    inputs:
-      AZURE_SUBSCRIPTION_ID: ${{parent.inputs.AZURE_SUBSCRIPTION_ID}}
-      RESOURCE_GROUP: ${{parent.inputs.RESOURCE_GROUP}}
-      AML_WORKSPACE_NAME: ${{parent.inputs.AML_WORKSPACE_NAME}}
-      amlConfigPath: ${{parent.inputs.amlConfigPath}}
+  # create_config:
+  #   name: create_config
+  #   display_name: create-config
+  #   code: src 
+  #   command: >-
+  #     . variables.txt &&
+  #     echo "Azure subscription ID: ${{inputs.AZURE_SUBSCRIPTION_ID}}" &&
+  #     python create_aml_config.py 
+  #     --subscription_id ${{inputs.AZURE_SUBSCRIPTION_ID}}
+  #     --resource_group ${{inputs.RESOURCE_GROUP}}
+  #     --workspace_name ${{inputs.AML_WORKSPACE_NAME}}
+  #     --config_path ${{inputs.amlConfigPath}} &&
+  #     ls
+  #   environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
+  #   inputs:
+  #     AZURE_SUBSCRIPTION_ID: ${{parent.inputs.AZURE_SUBSCRIPTION_ID}}
+  #     RESOURCE_GROUP: ${{parent.inputs.RESOURCE_GROUP}}
+  #     AML_WORKSPACE_NAME: ${{parent.inputs.AML_WORKSPACE_NAME}}
+  #     amlConfigPath: ${{parent.inputs.amlConfigPath}}
 
   train_model:
     name: train_model
