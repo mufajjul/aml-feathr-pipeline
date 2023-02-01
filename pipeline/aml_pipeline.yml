@@ -4,8 +4,8 @@ experiment_name: aml-demo-example
 description: Training Pipeline to train a model that predicts taxi fare price
 
 # <inputs_and_outputs>
-inputs:
-  subscription_id: $(AZURE_SUBSCRIPTION_ID)
+# inputs:
+#   subscription_id: $(AZURE_SUBSCRIPTION_ID)
   # input:
   #   type: uri_file
   #   path: azureml:taxi-data@latest
@@ -56,16 +56,17 @@ jobs:
     display_name: create-config
     code: src 
     command: >-
+      . variables.txt &&
       echo Test2 &&
-      echo ${{inputs.subscription_id}} &&
+      echo ${{AZURE_SUBSCRIPTION_ID}} &&
       python create_aml_config.py 
       --subscription_id ${{inputs.subscription_id}}
       --resource_group $(RESOURCE_GROUP)
       --workspace_name $(AML_WORKSPACE_NAME)
       --config_path $(amlConfigPath)
     environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
-    inputs:
-      subscription_id: ${{parent.inputs.subscription_id}}
+    # inputs:
+    #   subscription_id: ${{parent.inputs.subscription_id}}
 
   train_model:
     name: train_model

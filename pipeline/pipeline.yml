@@ -83,6 +83,16 @@ stages:
       #       echo "DataPath: $(DataPath)"
       #   displayName: Run Feathr
       #   condition: succeeded()
+
+      - task: Bash@3
+        inputs:
+          targetType: 'inline'
+          script: |
+          echo "AZURE_SUBSCRIPTION_ID=$(AZURE_SUBSCRIPTION_ID)" > variables.txt
+          echo "RESOURCE_GROUP=$(RESOURCE_GROUP)" >> variables.txt
+          echo "AML_WORKSPACE_NAME=$(AML_WORKSPACE_NAME)" >> variables.txt
+          echo "amlConfigPath=$(amlConfigPath)" >> variables.txt
+        displayName: Pass variables to AML pipeline
       
       - task: AzureCLI@2
         displayName: 'Run AML job'
@@ -100,7 +110,7 @@ stages:
             echo "Installed new AzureML CLI."
             az ml environment list --workspace-name $(AML_WORKSPACE_NAME) --resource-group $(RESOURCE_GROUP)
             echo "Creating AML job."
-            az ml job create --file pipeline/aml_pipeline.yml --resource-group $(resourceGroup) --workspace-name $(AML_WORKSPACE_NAME) --set AZURE_SUBSCRIPTION_ID="asda"
+            az ml job create --file pipeline/aml_pipeline.yml --resource-group $(resourceGroup) --workspace-name $(AML_WORKSPACE_NAME)
           condition: succeeded()
         # workingDirectory: $(projectRoot)
   
