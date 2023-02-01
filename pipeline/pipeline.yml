@@ -98,10 +98,10 @@ stages:
         inputs:
           targetType: 'inline'
           script: |
-            python create_aml_config.py 
-            --subscription_id $(AZURE_SUBSCRIPTION_ID)
-            --resource_group $(RESOURCE_GROUP)
-            --workspace_name $(AML_WORKSPACE_NAME)
+            python create_aml_config.py \
+            --subscription_id $(AZURE_SUBSCRIPTION_ID) \
+            --resource_group $(RESOURCE_GROUP) \
+            --workspace_name $(AML_WORKSPACE_NAME) \
             --config_path $(amlConfigPath)
         displayName: Create AML config file
       
