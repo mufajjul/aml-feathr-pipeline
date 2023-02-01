@@ -5,9 +5,9 @@ description: Training Pipeline to train a model that predicts taxi fare price
 
 # <inputs_and_outputs>
 inputs:
-  AZURE_SUBSCRIPTION_ID: "a6c2a7cc-d67e-4a1a-b765-983f08c0423a"
-  RESOURCE_GROUP: "rizofeathr11"
-  AML_WORKSPACE_NAME: "mlw-basicex-prod-202212150056"
+  subscription_id: "a6c2a7cc-d67e-4a1a-b765-983f08c0423a"
+  resource_group: "rizofeathr11"
+  aml_workspace_name: "mlw-basicex-prod-202212150056"
   amlConfigPath: aml_config.json
   # input:
   #   type: uri_file
@@ -62,11 +62,11 @@ jobs:
       ls &&
       . variables.txt &&
       echo Test2 &&
-      echo ${{parent.inputs.AZURE_SUBSCRIPTION_ID}} &&
+      echo ${{parent.inputs.subscription_id}} &&
       python create_aml_config.py 
-      --subscription_id ${{parent.inputs.AZURE_SUBSCRIPTION_ID}}
-      --resource_group ${{parent.inputs.RESOURCE_GROUP}}
-      --workspace_name ${{parent.inputs.AML_WORKSPACE_NAME}}
+      --subscription_id ${{parent.inputs.subscription_id}}
+      --resource_group ${{parent.inputs.resource_group}}
+      --workspace_name ${{parent.inputs.aml_workspace_name}}
       --config_path ${{parent.inputs.amlConfigPath}}
     environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
     # inputs:
