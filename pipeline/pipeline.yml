@@ -91,7 +91,6 @@ stages:
             echo "AZURE_SUBSCRIPTION_ID=$(AZURE_SUBSCRIPTION_ID)" > pipeline/src/variables.txt
             echo "RESOURCE_GROUP=$(RESOURCE_GROUP)" >> pipeline/src/variables.txt
             echo "AML_WORKSPACE_NAME=$(AML_WORKSPACE_NAME)" >> pipeline/src/variables.txt
-            echo "amlConfigPath=$(amlConfigPath)" >> pipeline/src/variables.txt
         displayName: Pass variables to AML pipeline
 
       - task: Bash@3
@@ -102,7 +101,7 @@ stages:
             --subscription_id $(AZURE_SUBSCRIPTION_ID) \
             --resource_group $(RESOURCE_GROUP) \
             --workspace_name $(AML_WORKSPACE_NAME) \
-            --config_path $(amlConfigPath)
+            --config_path "$(amlConfigPath)"
         displayName: Create AML config file
       
       - task: AzureCLI@2

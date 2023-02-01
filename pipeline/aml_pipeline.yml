@@ -77,7 +77,6 @@ jobs:
     code: src
     command: >-
       cat variables.txt &&
-      ls &&
       source variables.txt &&
       echo $AZURE_SUBSCRIPTION_ID &&
       echo "!@#" &&
@@ -88,7 +87,7 @@ jobs:
       pip install -r environment/requirements.txt --use-deprecated=legacy-resolver &&
       echo "Ready to train" &&
       python train.py
-      --config_path $amlConfigPath
+      --config_path 'aml_config.json'
       --data_path https://rizodeploy11dls.blob.core.windows.net/rizodeploy11fs/feathr_demo_data/data.csv
       --registered_model_name feathr-aml-demo
     environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
