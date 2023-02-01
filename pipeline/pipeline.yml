@@ -92,7 +92,7 @@ stages:
             echo "RESOURCE_GROUP=$(RESOURCE_GROUP)" >> src/variables.txt
             echo "AML_WORKSPACE_NAME=$(AML_WORKSPACE_NAME)" >> src/variables.txt
             echo "amlConfigPath=$(amlConfigPath)" >> src/variables.txt
-            ls
+            ls src
         displayName: Pass variables to AML pipeline
       
       - task: AzureCLI@2
