@@ -5,10 +5,6 @@ description: Training Pipeline to train a model that predicts taxi fare price
 
 # <inputs_and_outputs>
 inputs:
-  AZURE_SUBSCRIPTION_ID: "a6c2a7cc-d67e-4a1a-b765-983f08c0423a"
-  RESOURCE_GROUP: "rizofeathr11"
-  AML_WORKSPACE_NAME: "mlw-basicex-prod-202212150056"
-  amlConfigPath: "aml_config.json"
   # input:
   #   type: uri_file
   #   path: azureml:taxi-data@latest
@@ -81,6 +77,7 @@ jobs:
     code: src
     command: >-
       ls &&
+      source variables.txt &&
       echo $(AZURE_SUBSCRIPTION_ID) &&
       echo "!@#" &&
       conda env create -n feathr-env --file environment/conda.yml &&
