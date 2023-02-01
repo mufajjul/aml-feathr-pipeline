@@ -32,7 +32,7 @@ variables:
     value: 'ADOServiceConnection'
   # Path for the AML config file to be created at
   - name: amlConfigPath
-    value: './aml_config.json'
+    value: 'pipeline/src/aml_config.json'
   # Path to data for the AML stage
   # - name: DataPath
   #   value: ''
@@ -98,7 +98,7 @@ stages:
         inputs:
           targetType: 'inline'
           script: |
-            python create_aml_config.py \
+            python piopeline/create_aml_config.py \
             --subscription_id $(AZURE_SUBSCRIPTION_ID) \
             --resource_group $(RESOURCE_GROUP) \
             --workspace_name $(AML_WORKSPACE_NAME) \
