@@ -57,9 +57,9 @@ jobs:
     code: src 
     command: >-
       echo Test2 &&
-      echo ${{inputs.subscription_id}} &&
+      echo ${{parent.inputs.subscription_id}} &&
       python create_aml_config.py 
-      --subscription_id ${{inputs.subscription_id}}
+      --subscription_id ${{parent.inputs.subscription_id}}
       --resource_group $(RESOURCE_GROUP)
       --workspace_name $(AML_WORKSPACE_NAME)
       --config_path $(amlConfigPath)
