@@ -65,7 +65,8 @@ jobs:
       --subscription_id ${{inputs.AZURE_SUBSCRIPTION_ID}}
       --resource_group ${{inputs.RESOURCE_GROUP}}
       --workspace_name ${{inputs.AML_WORKSPACE_NAME}}
-      --config_path ${{inputs.amlConfigPath}}
+      --config_path ${{inputs.amlConfigPath}} &&
+      ls
     environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
     inputs:
       AZURE_SUBSCRIPTION_ID: ${{parent.inputs.AZURE_SUBSCRIPTION_ID}}
@@ -79,6 +80,7 @@ jobs:
     # code: ../../../data-science/src
     code: src
     command: >-
+      ls &&
       conda env create -n feathr-env --file environment/conda.yml &&
       eval "$(conda shell.bash hook)" &&  
       conda activate feathr-env &&
