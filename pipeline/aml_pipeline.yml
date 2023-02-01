@@ -60,7 +60,7 @@ jobs:
       echo Test2 &&
       echo ${{AZURE_SUBSCRIPTION_ID}} &&
       python create_aml_config.py 
-      --subscription_id ${{inputs.subscription_id}}
+      --subscription_id ${{AZURE_SUBSCRIPTION_ID}}
       --resource_group $(RESOURCE_GROUP)
       --workspace_name $(AML_WORKSPACE_NAME)
       --config_path $(amlConfigPath)
