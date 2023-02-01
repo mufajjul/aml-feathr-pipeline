@@ -3,15 +3,14 @@ type: pipeline
 experiment_name: aml-demo-example
 description: Training Pipeline to train a model that predicts taxi fare price
 
-variables:
-  - group: env-variables
 # <inputs_and_outputs>
-# inputs:
-#   input:
-#     type: uri_file
-#     path: azureml:taxi-data@latest
-#   enable_monitoring: 'false'
-#   table_name: 'taximonitoring'
+inputs:
+  subscription_id: $(AZURE_SUBSCRIPTION_ID)
+  # input:
+  #   type: uri_file
+  #   path: azureml:taxi-data@latest
+  # enable_monitoring: 'false'
+  # table_name: 'taximonitoring'
 
 outputs:
   train_data:
@@ -58,9 +57,9 @@ jobs:
     code: src 
     command: >-
       echo Test2 &&
-      echo $(AZURE_SUBSCRIPTION_ID) &&
+      echo ${{inputs.subscription_id}} &&
       python create_aml_config.py 
-      --subscription_id $(AZURE_SUBSCRIPTION_ID)
+      --subscription_id ${{inputs.subscription_id}}
       --resource_group $(RESOURCE_GROUP)
       --workspace_name $(AML_WORKSPACE_NAME)
       --config_path $(amlConfigPath)
