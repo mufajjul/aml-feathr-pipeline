@@ -59,6 +59,9 @@ jobs:
     display_name: create-config
     code: src 
     command: >-
+      echo Start!
+      ls . &&
+      echo outside:
       ls .. &&
       . variables.txt &&
       echo Test2 &&
