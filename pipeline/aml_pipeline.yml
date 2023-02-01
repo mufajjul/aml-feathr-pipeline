@@ -62,12 +62,12 @@ jobs:
       ls &&
       . variables.txt &&
       echo Test2 &&
-      echo ${{inputs.AZURE_SUBSCRIPTION_ID}} &&
+      echo ${{parent.inputs.AZURE_SUBSCRIPTION_ID}} &&
       python create_aml_config.py 
-      --subscription_id ${{inputs.AZURE_SUBSCRIPTION_ID}}
-      --resource_group ${{inputs.RESOURCE_GROUP}}
-      --workspace_name ${{inputs.AML_WORKSPACE_NAME}}
-      --config_path ${{inputs.amlConfigPath}}
+      --subscription_id ${{parent.inputs.AZURE_SUBSCRIPTION_ID}}
+      --resource_group ${{parent.inputs.RESOURCE_GROUP}}
+      --workspace_name ${{parent.inputs.AML_WORKSPACE_NAME}}
+      --config_path ${{parent.inputs.amlConfigPath}}
     environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
     # inputs:
     #   subscription_id: ${{parent.inputs.subscription_id}}
@@ -84,7 +84,7 @@ jobs:
       pip install -r ../requirements.txt --use-deprecated=legacy-resolver &&
       python train.py
       # --data_path $(DataPath)
-      --config_path $(amlConfigPath)
+      --config_path ${{parent.inputs.amlConfigPath}
       --data_path https://rizodeploy11dls.blob.core.windows.net/rizodeploy11fs/feathr_demo_data/data.csv
       --registered_model_name feathr-aml-demo
     environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
