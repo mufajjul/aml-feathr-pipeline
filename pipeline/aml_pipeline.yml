@@ -57,13 +57,15 @@ jobs:
     code: src 
     command: >-
       echo Test2 &&
-      echo ${{parent.inputs.subscription_id}} &&
+      echo ${{inputs.subscription_id}} &&
       python create_aml_config.py 
-      --subscription_id ${{parent.inputs.subscription_id}}
+      --subscription_id ${{inputs.subscription_id}}
       --resource_group $(RESOURCE_GROUP)
       --workspace_name $(AML_WORKSPACE_NAME)
       --config_path $(amlConfigPath)
     environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
+    inputs:
+      subscription_id: ${{parent.inputs.subscription_id}}
 
   train_model:
     name: train_model
