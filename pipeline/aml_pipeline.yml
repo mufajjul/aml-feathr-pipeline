@@ -79,13 +79,11 @@ jobs:
     # code: ../../../data-science/src
     code: src
     command: >-
-      echo "Creating environment" &&
       conda env create -n feathr-env --file environment/conda.yml &&
-      echo "Environment created. Activating..."
       #       eval "$(conda shell.bash hook)"
       conda activate feathr-env &&
-      echo "Environment active"
-      pip install -r ../requirements.txt --use-deprecated=legacy-resolver &&
+      echo "Environment active" &&
+      pip install -r environment/requirements.txt --use-deprecated=legacy-resolver &&
       echo "Ready to train" &&
       python train.py
       # --data_path $(DataPath)
