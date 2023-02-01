@@ -81,6 +81,8 @@ jobs:
     code: src
     command: >-
       ls &&
+      echo $(AZURE_SUBSCRIPTION_ID) &&
+      echo "!@#" &&
       conda env create -n feathr-env --file environment/conda.yml &&
       eval "$(conda shell.bash hook)" &&  
       conda activate feathr-env &&
