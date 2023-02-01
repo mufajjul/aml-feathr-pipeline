@@ -59,7 +59,7 @@ jobs:
     display_name: create-config
     code: src 
     command: >-
-      ls &&
+      ls .. &&
       . variables.txt &&
       echo Test2 &&
       echo ${{inputs.AZURE_SUBSCRIPTION_ID}} &&
