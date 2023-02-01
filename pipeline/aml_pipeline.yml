@@ -8,7 +8,7 @@ inputs:
   AZURE_SUBSCRIPTION_ID: "a6c2a7cc-d67e-4a1a-b765-983f08c0423a"
   RESOURCE_GROUP: "rizofeathr11"
   AML_WORKSPACE_NAME: "mlw-basicex-prod-202212150056"
-  amlConfigPath: aml_config.json
+  amlConfigPath: "aml_config.json"
   # input:
   #   type: uri_file
   #   path: azureml:taxi-data@latest
@@ -79,9 +79,8 @@ jobs:
     # code: ../../../data-science/src
     code: src
     command: >-
-      conda env list &&
       echo "Creating environment" &&
-      conda env create -n feathr-env --file ../conda.yml &&
+      conda env create -n feathr-env --file environment/conda.yml &&
       echo "Environment created. Activating..."
       #       eval "$(conda shell.bash hook)"
       conda activate feathr-env &&

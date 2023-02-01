@@ -14,10 +14,10 @@ variables:
     value: 'feathr-env'
   # Environment file path (.yml)
   - name: environmentPath
-    value: 'pipeline/conda.yml'
+    value: 'pipeline/src/environment/conda.yml'
   # Pip requirements path
   - name: requirementsPath
-    value: "pipeline/requirements.txt"
+    value: "pipeline/src/environment/requirements.txt"
   # Python version: 3.9.12
   - name: pythonVersion
     value: '3.9.12'
