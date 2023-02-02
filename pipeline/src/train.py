@@ -32,9 +32,13 @@ def main():
     print("ENV:")
     print(os.environ['AZURE_TENANT_ID'])
     print(os.environ['AZURE_CLIENT_ID'])
+    print(os.environ['AZURE_CLIENT_SECRET'])
 
     ml_client = MLClient.from_config(DefaultAzureCredential(), path=args.config_path)
     ws = ml_client.workspaces.get(ml_client.workspace_name) 
+
+    print(ml_client)
+    print(ws)
 
     # df = pd.read_csv(args.data, header=1, index_col=0)
 
