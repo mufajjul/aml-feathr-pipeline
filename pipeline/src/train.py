@@ -39,6 +39,7 @@ def main():
 
     # df = pd.read_csv(args.data_path, header=1, index_col=0)
     # Create/retrieve the necessary clients and upload the data
+    from io import BytesIO
     from azure.storage.filedatalake import DataLakeServiceClient 
     ADLS_SCHEME = 'https'
     RESOURCE_PREFIX = "rizodeploy11"
@@ -56,7 +57,7 @@ def main():
     file_client = create_or_retrieve_file(directory_client, ADLS_DATA_FILE)
     download = file_client.download_file()
     downloaded_bytes = download.readall()
-    df = pd.read_csv(downloaded_bytes)
+    df = pd.read_csv(BytesIO(downloaded_bytes))
     # Convert Pandas Dataframe to CSV and upload to the specified file
 
     mlflow.set_tracking_uri(ws.mlflow_tracking_uri)
