@@ -38,7 +38,7 @@ def main():
 
     # df = pd.read_csv(args.data, header=1, index_col=0)
 
-    mlflow.set_tracking_uri(ws.get_mlflow_tracking_uri())
+    mlflow.set_tracking_uri(ws.mlflow_tracking_uri)
 
     # Start Logging
     mlflow.start_run()
