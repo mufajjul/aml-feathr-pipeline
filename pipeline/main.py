@@ -557,5 +557,5 @@ file_client.upload_data(output, overwrite=True)
 ADLS_DATA_PATH = f"{ADLS_SYSTEM_URL}/{ADLS_FILE_SYSTEM}/{ADLS_DATA_DIRECTORY}/{ADLS_DATA_FILE}"
 print("ADLS_DATA_PATH:", ADLS_DATA_PATH)
 
-# Replace the DataPath variable in the ADO Pipeline with the newly acquired data path
-print(f"##vso[task.setvariable variable=DataPath]{ADLS_DATA_PATH}")
+# Replace the ADLS_DATA_PATH variable in the ADO Pipeline with the newly acquired data path
+print(f"##vso[task.setvariable variable=ADLS_DATA_PATH]{ADLS_DATA_PATH}")

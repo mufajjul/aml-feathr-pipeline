@@ -33,8 +33,8 @@ variables:
   # Path for the AML config file to be created at
   - name: amlConfigPath
     value: 'pipeline/src/aml_config.json'
-  - name: ADLS_DATA_PATH
-    value: 'https://rizodeploy11dls.blob.core.windows.net/rizodeploy11fs/feathr_demo_data/data.csv'
+  # - name: ADLS_DATA_PATH
+  #   value: 'https://rizodeploy11dls.blob.core.windows.net/rizodeploy11fs/feathr_demo_data/data.csv'
   # Path to data for the AML stage
   # - name: DataPath
   #   value: ''
@@ -53,52 +53,49 @@ stages:
     pool:
       vmImage: $(vmImageName)
     steps:
-      # - task: UsePythonVersion@0
-      #   inputs:
-      #     versionSpec: '$(pythonVersion)'
-      #   displayName: 'Use Python $(pythonVersion)'
+      - task: UsePythonVersion@0
+        inputs:
+          versionSpec: '$(pythonVersion)'
+        displayName: 'Use Python $(pythonVersion)'
 
-      # - script: conda env create -n $(environmentName) --file $(environmentPath)
-      #   displayName: Create Anaconda environment
+      - script: conda env create -n $(environmentName) --file $(environmentPath)
+        displayName: Create Anaconda environment
 
-      # - script: conda env list
-      #   displayName:  Verify the environment has been installed
-      #   condition: succeeded()
-
-      # - task: Bash@3
-      #   inputs:
-      #     targetType: 'inline'
-      #     script: |
-      #       eval "$(conda shell.bash hook)"
-      #       echo $(python -V)
-      #       conda activate $(environmentName)
-      #       pip install -r $(requirementsPath) --use-deprecated=legacy-resolver
-      #   displayName: Install requirements
-
-      # - task: Bash@3
-      #   inputs:
-      #     targetType: 'inline'
-      #     script: |
-      #       eval "$(conda shell.bash hook)"
-      #       conda activate $(environmentName)
-      #       python pipeline/main.py --resource_prefix $(RESOURCE_PREFIX) --resource_group $(RESOURCE_GROUP) --azure_subscription_id $(AZURE_SUBSCRIPTION_ID) --azure_client_id $(AZURE_CLIENT_ID) --azure_tenant_id $(AZURE_TENANT_ID) --azure_client_secret $(AZURE_CLIENT_SECRET) --adls_key $(ADLS_KEY)
-      #       echo "DataPath: $(DataPath)"
-      #   displayName: Run Feathr
-      #   condition: succeeded()
+      - script: conda env list
+        displayName:  Verify the environment has been installed
+        condition: succeeded()
 
       - task: Bash@3
         inputs:
           targetType: 'inline'
           script: |
-            echo "AZURE_SUBSCRIPTION_ID=$(AZURE_SUBSCRIPTION_ID)" > pipeline/src/variables.txt
-            echo "RESOURCE_GROUP=$(RESOURCE_GROUP)" >> pipeline/src/variables.txt
-            echo "AML_WORKSPACE_NAME=$(AML_WORKSPACE_NAME)" >> pipeline/src/variables.txt
-            echo "AZURE_TENANT_ID=$(AZURE_TENANT_ID)" >> pipeline/src/variables.txt
+            eval "$(conda shell.bash hook)"
+            echo $(python -V)
+            conda activate $(environmentName)
+            pip install -r $(requirementsPath) --use-deprecated=legacy-resolver
+        displayName: Install requirements
+
+      - task: Bash@3
+        inputs:
+          targetType: 'inline'
+          script: |
+            eval "$(conda shell.bash hook)"
+            conda activate $(environmentName)
+            python pipeline/main.py --resource_prefix $(RESOURCE_PREFIX) --resource_group $(RESOURCE_GROUP) --azure_subscription_id $(AZURE_SUBSCRIPTION_ID) --azure_client_id $(AZURE_CLIENT_ID) --azure_tenant_id $(AZURE_TENANT_ID) --azure_client_secret $(AZURE_CLIENT_SECRET) --adls_key $(ADLS_KEY)
+            echo "ADLS_DATA_PATH: $(ADLS_DATA_PATH)"
+        displayName: Run Feathr
+        condition: succeeded()
+
+      - task: Bash@3
+        inputs:
+          targetType: 'inline'
+          script: |
+            echo "AZURE_TENANT_ID=$(AZURE_TENANT_ID)" > pipeline/src/variables.txt
             echo "AZURE_CLIENT_ID=$(AZURE_CLIENT_ID)" >> pipeline/src/variables.txt
             echo "AZURE_CLIENT_SECRET=$(AZURE_CLIENT_SECRET)" >> pipeline/src/variables.txt
             echo "ADLS_DATA_PATH=$(ADLS_DATA_PATH)" >> pipeline/src/variables.txt
             echo "ADLS_KEY=$(ADLS_KEY)" >> pipeline/src/variables.txt
-        displayName: Pass variables to AML pipeline
+        displayName: Record variables for AML pipeline
 
       - task: Bash@3
         inputs:
@@ -119,7 +116,6 @@ stages:
           scriptType: pscore
           scriptLocation: inlineScript
           inlineScript: |
-            ls
             #To install the Machine Learning CLI extension
             az extension remove -n azure-cli-ml
             az extension remove -n ml
