@@ -29,18 +29,11 @@ def main():
     os.environ['AZURE_TENANT_ID'] = args.azure_tenant_id
     os.environ['AZURE_CLIENT_ID'] = args.azure_client_id
     os.environ['AZURE_CLIENT_SECRET'] = args.azure_client_secret
-    print("ENV:")
-    print(os.environ['AZURE_TENANT_ID'])
-    print(os.environ['AZURE_CLIENT_ID'])
-    print(os.environ['AZURE_CLIENT_SECRET'])
 
     ml_client = MLClient.from_config(DefaultAzureCredential(), path=args.config_path)
     ws = ml_client.workspaces.get(ml_client.workspace_name) 
 
-    print(ml_client)
-    print(ws)
-
-    # df = pd.read_csv(args.data, header=1, index_col=0)
+    df = pd.read_csv(args.data_path, header=1, index_col=0)
 
     mlflow.set_tracking_uri(ws.mlflow_tracking_uri)
 
@@ -50,8 +43,8 @@ def main():
     # enable autologging
     mlflow.sklearn.autolog()
 
-    X = df_new.loc[:, df_new.columns != "label"]
-    y = df_new["label"]
+    X = df.loc[:, df.columns != "label"]
+    y = df["label"]
 
     X_train, X_test, y_train, y_test = train_test_split(
         X, y, test_size=0.2, random_state=42
