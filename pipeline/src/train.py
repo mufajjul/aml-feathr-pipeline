@@ -17,9 +17,6 @@ import mlflow
 import mlflow.sklearn
 
 def main():
-    print("ENV:")
-    print(os.environ['AZURE_TENANT_ID'])
-    print(os.environ['AZURE_CLIENT_ID'])
     parser = argparse.ArgumentParser()
     parser.add_argument("--data_path", type=str, help="Path to input data.")
     parser.add_argument("--registered_model_name", type=str, help="Model name.")
@@ -32,6 +29,9 @@ def main():
     os.environ['AZURE_TENANT_ID'] = args.azure_tenant_id
     os.environ['AZURE_CLIENT_ID'] = args.azure_client_id
     os.environ['AZURE_CLIENT_SECRET'] = args.azure_client_secret
+    print("ENV:")
+    print(os.environ['AZURE_TENANT_ID'])
+    print(os.environ['AZURE_CLIENT_ID'])
 
     ml_client = MLClient.from_config(DefaultAzureCredential(), path=args.config_path)
     ws = ml_client.workspaces.get(ml_client.workspace_name) 
