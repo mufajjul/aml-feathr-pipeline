@@ -93,6 +93,7 @@ jobs:
       --azure_tenant_id $AZURE_TENANT_ID
       --azure_client_id $AZURE_CLIENT_ID
       --azure_client_secret $AZURE_CLIENT_SECRET
+      --adls_key $ADLS_KEY
     environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
     # inputs:
     #   amlConfigPath: ${{parent.inputs.amlConfigPath}}

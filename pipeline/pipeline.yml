@@ -97,6 +97,7 @@ stages:
             echo "AZURE_CLIENT_ID=$(AZURE_CLIENT_ID)" >> pipeline/src/variables.txt
             echo "AZURE_CLIENT_SECRET=$(AZURE_CLIENT_SECRET)" >> pipeline/src/variables.txt
             echo "ADLS_DATA_PATH=$(ADLS_DATA_PATH)" >> pipeline/src/variables.txt
+            echo "ADLS_KEY=$(ADLS_KEY)" >> pipeline/src/variables.txt
         displayName: Pass variables to AML pipeline
 
       - task: Bash@3
