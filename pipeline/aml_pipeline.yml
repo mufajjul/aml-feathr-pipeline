@@ -90,6 +90,9 @@ jobs:
       --config_path 'aml_config.json'
       --data_path $ADLS_DATA_PATH
       --registered_model_name feathr-aml-demo
+      --azure_tenant_id $AZURE_TENANT_ID
+      --azure_client_id $AZURE_CLIENT_ID
+      --azure_client_secret $AZURE_CLIENT_SECRET
     environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
     # inputs:
     #   amlConfigPath: ${{parent.inputs.amlConfigPath}}

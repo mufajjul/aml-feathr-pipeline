@@ -33,6 +33,8 @@ variables:
   # Path for the AML config file to be created at
   - name: amlConfigPath
     value: 'pipeline/src/aml_config.json'
+  - name: ADLS_DATA_PATH
+    value: 'https://rizodeploy11dls.blob.core.windows.net/rizodeploy11fs/feathr_demo_data/data.csv'
   # Path to data for the AML stage
   # - name: DataPath
   #   value: ''

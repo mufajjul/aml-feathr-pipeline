@@ -24,7 +24,14 @@ def main():
     parser.add_argument("--data_path", type=str, help="Path to input data.")
     parser.add_argument("--registered_model_name", type=str, help="Model name.")
     parser.add_argument("--config_path", type=str, help="Path to AML config file.")
+    parser.add_argument("--azure_tenant_id", type=str)
+    parser.add_argument("--azure_client_id", type=str)
+    parser.add_argument("--azure_client_secret", type=str)
     args = parser.parse_args()
+
+    os.environ['AZURE_TENANT_ID'] = args.azure_tenant_id
+    os.environ['AZURE_CLIENT_ID'] = args.azure_client_id
+    os.environ['AZURE_CLIENT_SECRET'] = args.azure_client_secret
 
     ml_client = MLClient.from_config(DefaultAzureCredential(), path=args.config_path)
     ws = ml_client.workspaces.get(ml_client.workspace_name) 
