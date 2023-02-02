@@ -17,6 +17,9 @@ import mlflow
 import mlflow.sklearn
 
 def main():
+    print("ENV:")
+    print(os.environ['AZURE_TENANT_ID'])
+    print(os.environ['AZURE_CLIENT_ID'])
     parser = argparse.ArgumentParser()
     parser.add_argument("--data_path", type=str, help="Path to input data.")
     parser.add_argument("--registered_model_name", type=str, help="Model name.")
