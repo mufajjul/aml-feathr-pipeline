@@ -9,4 +9,5 @@ pyspark
 azure-cli
 azure-ai-ml
 mlflow
+azureml-mlflow
 mltable
