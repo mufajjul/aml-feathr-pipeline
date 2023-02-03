@@ -1,3 +1,6 @@
 .env
 .DS_Store
 *.ipynb
+config-infra-*.yml
+*__pycache__*
+

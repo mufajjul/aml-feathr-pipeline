@@ -529,7 +529,7 @@ df_processed = (
 df_pandas = df_processed.toPandas()
 
 # Remove columns that don't work with our regressor
-column_list = ['lpep_pickup_datetime', 'lpep_dropoff_datetime', 'store_and_fwd_flag']
+column_list = ['lpep_pickup_datetime', 'lpep_dropoff_datetime', 'store_and_fwd_flag', 'f_is_long_trip_distance']
 for col in column_list:
     del df_pandas[col]
 
