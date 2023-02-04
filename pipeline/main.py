@@ -260,16 +260,6 @@ else:
 
 client = FeathrClient(config_path=config_path)
 
-spark = (
-        SparkSession
-        .builder
-        .appName("feathr")
-        .config("spark.jars.packages", "org.apache.spark:spark-avro_2.12:3.3.0,io.delta:delta-core_2.12:2.1.1")
-        .config("spark.sql.extensions", "io.delta.sql.DeltaSparkSessionExtension")
-        .config("spark.sql.catalog.spark_catalog", "org.apache.spark.sql.delta.catalog.DeltaCatalog")
-        .config("spark.ui.port", "8080")  # Set ui port other than the default one (4040) so that feathr spark job doesn't fail. 
-        .getOrCreate()
-    )
 
 
 # Download the data and define features
@@ -416,6 +406,16 @@ client.build_features(
 DATA_FORMAT = "parquet"
 offline_features_path = str(Path(DATA_STORE_PATH, "feathr_output", f"features.{DATA_FORMAT}"))
 
+spark = (
+        SparkSession
+        .builder
+        .appName("feathr")
+        .config("spark.jars.packages", "org.apache.spark:spark-avro_2.12:3.3.0,io.delta:delta-core_2.12:2.1.1")
+        .config("spark.sql.extensions", "io.delta.sql.DeltaSparkSessionExtension")
+        .config("spark.sql.catalog.spark_catalog", "org.apache.spark.sql.delta.catalog.DeltaCatalog")
+        .config("spark.ui.port", "8080")  # Set ui port other than the default one (4040) so that feathr spark job doesn't fail. 
+        .getOrCreate()
+    )
 # Features that we want to request. Can use a subset of features
 query = FeatureQuery(
     feature_list=feature_names,
