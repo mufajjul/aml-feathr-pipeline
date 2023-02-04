@@ -3,3 +3,4 @@ azure-ai-ml
 mlflow
 azureml-mlflow
 mltable
+python-dotenv

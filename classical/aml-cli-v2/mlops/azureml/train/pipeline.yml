@@ -30,18 +30,12 @@ settings:
 jobs:
 
   create_feathr_config:
-    parser.add_argument("--project_name", type=str, help="Name of Feathr project.")
-    parser.add_argument("--resource_prefix", type=str, help="Resource prefix.")
-    parser.add_argument("--spark_cluster", type=str, help="Type of Spark cluster.")
-    parser.add_argument("--feathr_config_path", type=str, help="Path to resulting feathr config file.")
     name: create_feathr_config
     display_name: create-feathr-config
     code: ../../../data-science/src
-    # TODO: Change the variable workaround to something safer.
     command: >-
       python create_feathr_config.py
       --project_name 'feathr_demo'
-      --resource_prefix <resource-prefix>
       --spark_cluster 'azure_synapse'
       --feathr_config_path 'feathr_config.yaml'
     environment: azureml:feathr-demo-env@latest
@@ -53,13 +47,6 @@ jobs:
     command: >-
       pip install -r requirements/feathr-requirements.txt --use-deprecated=legacy-resolver &&
       python prep.py
-      --resource_prefix <resource-prefix>
-      --resource_group <resource-group>
-      --azure_client_id <client-id>
-      --azure_tenant_id <tenant-id>
-      --azure_client_secret <client-secret>
-      --azure_subscription_id <subscription-id>
-      --adls_key <adls-key>
     environment: azureml:feathr-demo-env@latest
     # inputs:
     #   data: ${{parent.inputs.input}}
@@ -70,23 +57,28 @@ jobs:
     #   val_data: ${{parent.outputs.val_data}}
     #   test_data: ${{parent.outputs.test_data}}
 
+  create_aml_config:
+    name: create_aml_config
+    display_name: create-feathr-config
+    code: ../../../data-science/src
+    command: >-
+      python create_aml_config.py
+      --aml_config_path 'aml_config.json'
+    environment: azureml:feathr-demo-env@latest
+
   train_model:
     name: train_model
     display_name: train-model
     code: ../../../data-science/src
-    # TODO: Change the variable workaround to something safer.
     command: >-
       pip install -r requirements/train-requirements.txt --use-deprecated=legacy-resolver &&
       python train.py
       --config_path 'aml_config.json'
       --data_path ${{inputs.data}}
       --registered_model_name feathr-aml-demo
-      --azure_tenant_id $AZURE_TENANT_ID
-      --azure_client_id $AZURE_CLIENT_ID
-      --azure_client_secret $AZURE_CLIENT_SECRET
-      --adls_key $ADLS_KEY
     environment: azureml:feathr-demo-env@latest
     inputs:
+      # TODO: Remove hardcoded data path
       data: ${{parent.inputs.input}}
 
 

@@ -7,6 +7,7 @@ from azure.keyvault.secrets import SecretClient
 from feathr import FeathrClient
 
 
+
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s [%(levelname)s] %(message)s",
@@ -17,9 +18,18 @@ logging.basicConfig(
 
 # container to hold common configs used throughout lifecycle (prep, train, deploy....)
 # current limitation to push data directly to the storage account, hence user is instructed to store data (in readme) in this specific container
-fs_config = {"data_container_name": "nyctaxi"}
-
-
+fs_config = {
+    "data_container_name": "nyctaxi",
+    "resource_group": "rizofeathr11",
+    "client_id": "7c02dbef-0dd5-4b6e-8eb3-6aed7cd5fce9",
+    "tenant_id": "72f988bf-86f1-41af-91ab-2d7cd011db47",
+    "subscription_id": "a6c2a7cc-d67e-4a1a-b765-983f08c0423a",
+    "adls_scheme": "https",
+    "adls_data_directory": "feathr_demo_data",
+    "adls_data_file": "feathr_data.csv",
+    "workspace_name": "mlw-basicex-prod-202212150056"
+    }
+    
 def get_active_branch_name():
     """Get the name of the active branch"""
     head_dir = Path(os.path.join(
@@ -58,7 +68,7 @@ def set_required_feathr_config(credential: DefaultAzureCredential):
         logging.info("Reading  {} file".format(config_file_path))
         config = yaml.safe_load(f)
 
-    # adding "fs" to namespace as this is waht we do in the infrastructure code to separate featurestore resorces
+    # adding "fs" to namespace as this is what we do in the infrastructure code to separate featurestore resorces
     resource_prefix = config.get("variables").get("namespace") + "fs"
     resource_postfix = config.get("variables").get("postfix")
     resource_env = config.get("variables").get("environment")
@@ -66,11 +76,17 @@ def set_required_feathr_config(credential: DefaultAzureCredential):
         resource_prefix, resource_postfix, resource_env))
 
     # Get all the required credentials from Azure Key Vault
-    key_vault_name = "kv-"+resource_prefix+"-"+resource_postfix+resource_env
-    synapse_workspace_url = "sy"+resource_prefix+"-"+resource_postfix+resource_env
-    adls_account = "st"+resource_prefix+resource_postfix+resource_env
-    adls_fs_name = "dl"+resource_prefix+resource_postfix+resource_env
+    # key_vault_name = "kv-"+resource_prefix+"-"+resource_postfix+resource_env
+    # synapse_workspace_url = "sy"+resource_prefix+"-"+resource_postfix+resource_env
+    # adls_account = "st"+resource_prefix+resource_postfix+resource_env
+    # adls_fs_name = "dl"+resource_prefix+resource_postfix+resource_env
+    resource_prefix = config.get("variables").get("namespace")
+    key_vault_name = resource_prefix + "kv"
     key_vault_uri = f"https://{key_vault_name}.vault.azure.net"
+    synapse_workspace_url = resource_prefix + "syws"
+    adls_account = resource_prefix + "dls"
+    adls_fs_name = resource_prefix + "fs"
+
     client = SecretClient(vault_url=key_vault_uri, credential=credential)
     secretName = "FEATHR-ONLINE-STORE-CONN"
     retrieved_secret = str(client.get_secret(secretName).value)
@@ -94,6 +110,7 @@ def set_required_feathr_config(credential: DefaultAzureCredential):
     # Set common configs used throughout lifecycle (prep, train, deploy....)
     fs_config['feathr_output_path'] = f'abfss://{adls_fs_name}@{adls_account}.dfs.core.windows.net/feathr_output'
     fs_config['adls_account'] = adls_account
+    fs_config['resource_prefix'] = resource_prefix
 
 
 def get_feathr_client():

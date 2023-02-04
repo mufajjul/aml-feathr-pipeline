@@ -7,3 +7,4 @@ azure-core
 ipykernel
 pyspark
 azure-cli
+python-dotenv

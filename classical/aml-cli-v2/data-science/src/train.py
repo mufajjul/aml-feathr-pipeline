@@ -14,7 +14,8 @@ from azure.ai.ml import MLClient
 import mlflow
 import mlflow.sklearn
 
-from utils import create_or_retrieve_file_system, create_or_retrieve_directory, create_or_retrieve_file
+import utils
+from dotenv import load_dotenv
 
 def parse_args():
     '''Parse input arguments.'''
@@ -32,10 +33,10 @@ def parse_args():
     return args
 
 def main(args):
-    os.environ['AZURE_TENANT_ID'] = args.azure_tenant_id
-    os.environ['AZURE_CLIENT_ID'] = args.azure_client_id
-    os.environ['AZURE_CLIENT_SECRET'] = args.azure_client_secret
-    os.environ['ADLS_KEY'] = args.adls_key
+    load_dotenv()
+
+    os.environ['AZURE_TENANT_ID'] = utils.fs_config.get('tenant_id')
+    os.environ['AZURE_CLIENT_ID'] = utils.fs_config.get('client_id')
 
     ml_client = MLClient.from_config(DefaultAzureCredential(), path=args.config_path)
     ws = ml_client.workspaces.get(ml_client.workspace_name) 
@@ -55,9 +56,9 @@ def main(args):
         account_url=ADLS_SYSTEM_URL, credential=os.environ['ADLS_KEY'])
 
 
-    file_system_client = create_or_retrieve_file_system(service_client, ADLS_FILE_SYSTEM)
-    directory_client = create_or_retrieve_directory(file_system_client, ADLS_DATA_DIRECTORY)
-    file_client = create_or_retrieve_file(directory_client, ADLS_DATA_FILE)
+    file_system_client = utils.create_or_retrieve_file_system(service_client, ADLS_FILE_SYSTEM)
+    directory_client = utils.create_or_retrieve_directory(file_system_client, ADLS_DATA_DIRECTORY)
+    file_client = utils.create_or_retrieve_file(directory_client, ADLS_DATA_FILE)
     download = file_client.download_file()
     downloaded_bytes = download.readall()
     df = pd.read_csv(BytesIO(downloaded_bytes))
