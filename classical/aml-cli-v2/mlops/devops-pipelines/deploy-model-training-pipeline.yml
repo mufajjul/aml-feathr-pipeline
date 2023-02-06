@@ -57,7 +57,7 @@ stages:
               data_file: $(Build.SourcesDirectory)/classical/aml-cli-v2/mlops/azureml/train/data.yml
           - template: templates/${{ variables.version }}/run-pipeline.yml@mlops-templates
             parameters:
-              pipeline_file: $(Build.SourcesDirectory)/classical/aml-cli-v2/mlops/azureml/train/pipeline.yml
+              pipeline_file: $(Build.SourcesDirectory)/classical/aml-cli-v2/mlops/azureml/train/aml-pipeline.yml
               experiment_name: $(environment)_taxi_fare_train_$(Build.SourceBranchName)
               display_name: $(environment)_taxi_fare_run_$(Build.BuildID)
               enable_monitoring: $(enable_monitoring)
