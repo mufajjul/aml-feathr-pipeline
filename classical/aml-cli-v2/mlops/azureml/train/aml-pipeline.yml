@@ -73,7 +73,7 @@ jobs:
   train_model:
     name: train_model
     display_name: train-model
-    code: src
+    code: ../../../datascience/src
     # TODO: Change the variable workaround to something safer.
     command: >-
       source variables.txt &&
