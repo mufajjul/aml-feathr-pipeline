@@ -42,7 +42,7 @@ stages:
           - template: templates/${{ variables.version }}/register-environment.yml@mlops-templates
             parameters:
               environment_name: taxi-train-env
-              environment_file: /classical/aml-cli-v2/mlops/azureml/train/train-env.yml
+              environment_file: $(Build.SourcesDirectory)/classical/aml-cli-v2/mlops/azureml/train/train-env.yml
           - template: templates/${{ variables.version }}/create-compute.yml@mlops-templates
             parameters:
               cluster_name: cpu-cluster
@@ -54,10 +54,10 @@ stages:
             parameters:
               data_type: uri_file
               data_name: taxi-data
-              data_file: /classical/aml-cli-v2/mlops/azureml/train/data.yml
+              data_file: $(Build.SourcesDirectory)/classical/aml-cli-v2/mlops/azureml/train/data.yml
           - template: templates/${{ variables.version }}/run-pipeline.yml@mlops-templates
             parameters:
-              pipeline_file: /classical/aml-cli-v2/mlops/azureml/train/pipeline.yml
+              pipeline_file: $(Build.SourcesDirectory)/classical/aml-cli-v2/mlops/azureml/train/pipeline.yml
               experiment_name: $(environment)_taxi_fare_train_$(Build.SourceBranchName)
               display_name: $(environment)_taxi_fare_run_$(Build.BuildID)
               enable_monitoring: $(enable_monitoring)
